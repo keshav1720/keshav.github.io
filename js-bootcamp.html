@@ -1,0 +1,1930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JS Bootcamp – Spoon Consulting</title>
+<style>
+:root {
+  --bg: #0c1828;
+  --surface: #112236;
+  --surface2: #1a2f4a;
+  --border: #253d5c;
+  --accent: #E8B84B;
+  --accent2: #a8b8ff;
+  --accent3: #6dd4dc;
+  --danger: #c44570;
+  --text: #eef2f8;
+  --text-muted: #6b88a8;
+  --code-bg: #091422;
+  --keyword: #e8709a;
+  --string: #8fe0c8;
+  --number: #E8B84B;
+  --comment: #4a6a88;
+  --func: #a8c8ff;
+  --op: #E8B84B;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);display:flex;}
+
+/* SIDEBAR */
+#sidebar{width:260px;min-width:260px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+#sidebar-logo{padding:20px 20px 16px;border-bottom:1px solid var(--border);}
+#sidebar-logo svg{display:block;}
+#sidebar-label{padding:14px 20px 8px;font-size:10px;letter-spacing:2px;color:var(--text-muted);text-transform:uppercase;font-weight:600;}
+#sidebar-nav{flex:1;overflow-y:auto;padding:0 10px 10px;}
+#sidebar-nav::-webkit-scrollbar{width:4px;}
+#sidebar-nav::-webkit-scrollbar-track{background:transparent;}
+#sidebar-nav::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;font-size:13.5px;color:var(--text-muted);transition:all .18s;text-decoration:none;border:none;background:none;width:100%;text-align:left;}
+.nav-item:hover{background:var(--surface2);color:var(--text);}
+.nav-item.active{background:rgba(232,184,75,.13);color:var(--accent);font-weight:600;}
+.nav-item.visited .nav-num{background:var(--accent3);color:var(--bg);}
+.nav-num{width:20px;height:20px;border-radius:50%;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;transition:all .18s;}
+#sidebar-footer{padding:14px 20px;border-top:1px solid var(--border);}
+#progress-label{font-size:11px;color:var(--text-muted);margin-bottom:6px;display:flex;justify-content:space-between;}
+#progress-bar-bg{height:4px;background:var(--surface2);border-radius:2px;overflow:hidden;}
+#progress-bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent3));border-radius:2px;transition:width .4s ease;width:0%;}
+
+/* MAIN */
+#main{flex:1;overflow-y:auto;height:100vh;}
+#main::-webkit-scrollbar{width:6px;}
+#main::-webkit-scrollbar-track{background:transparent;}
+#main::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+.section{min-height:100vh;padding:48px 56px;max-width:900px;}
+.section:not(:first-child){border-top:1px solid var(--border);}
+
+/* HERO */
+#section-intro{background:linear-gradient(160deg,var(--bg) 60%,#0d1f35);display:flex;flex-direction:column;justify-content:center;min-height:100vh;}
+.hero-eyebrow{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:16px;}
+.hero-title{font-size:52px;font-weight:700;line-height:1.1;margin-bottom:16px;}
+.hero-title span{color:var(--accent);}
+.hero-sub{font-size:18px;color:var(--text-muted);max-width:520px;line-height:1.6;margin-bottom:40px;}
+.hero-chips{display:flex;flex-wrap:wrap;gap:10px;}
+.chip{padding:6px 14px;background:var(--surface);border:1px solid var(--border);border-radius:20px;font-size:13px;color:var(--text-muted);}
+
+/* SECTION HEADINGS */
+.section-eyebrow{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:10px;}
+.section-title{font-size:32px;font-weight:700;margin-bottom:10px;line-height:1.2;}
+.section-desc{font-size:15px;color:var(--text-muted);max-width:640px;line-height:1.7;margin-bottom:28px;}
+
+/* CODE BLOCKS */
+.code-block{background:var(--code-bg);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:18px 0;}
+.code-block-header{padding:10px 16px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted);}
+.code-block-header .dots{display:flex;gap:5px;}
+.code-block-header .dot{width:10px;height:10px;border-radius:50%;}
+.dot-r{background:#c44570;}
+.dot-y{background:#E8B84B;}
+.dot-g{background:#6dd4dc;}
+.code-block-label{margin-left:4px;font-size:12px;color:var(--text-muted);}
+.code-block pre{padding:18px 20px;font-family:'Cascadia Code','Fira Code','Courier New',monospace;font-size:13.5px;line-height:1.75;overflow-x:auto;white-space:pre;}
+.code-block pre::-webkit-scrollbar{height:4px;}
+.code-block pre::-webkit-scrollbar-thumb{background:var(--border);}
+span.kw{color:var(--keyword);}
+span.str{color:var(--string);}
+span.num{color:var(--number);}
+span.cmt{color:var(--comment);font-style:italic;}
+span.fn{color:var(--func);}
+span.op{color:var(--op);}
+
+/* CARDS */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin:20px 0;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:10px;transition:border-color .2s;}
+.card:hover{border-color:var(--accent);}
+.card-icon{font-size:28px;}
+.card-title{font-size:14px;font-weight:600;}
+.card-desc{font-size:12.5px;color:var(--text-muted);line-height:1.5;}
+
+/* TABLE */
+.styled-table{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;}
+.styled-table th{background:var(--surface2);padding:10px 14px;text-align:left;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);border-bottom:1px solid var(--border);}
+.styled-table td{padding:10px 14px;border-bottom:1px solid rgba(37,61,92,.5);}
+.styled-table tr:last-child td{border-bottom:none;}
+.badge{display:inline-block;padding:2px 9px;border-radius:10px;font-size:11px;font-weight:700;}
+.badge-green{background:rgba(109,212,220,.15);color:var(--accent3);}
+.badge-red{background:rgba(196,69,112,.15);color:var(--danger);}
+.badge-yellow{background:rgba(232,184,75,.15);color:var(--accent);}
+
+/* INFO BOX */
+.info-box{background:rgba(168,184,255,.07);border:1px solid rgba(168,184,255,.2);border-radius:10px;padding:14px 18px;margin:16px 0;font-size:13.5px;line-height:1.7;}
+.info-box.warn{background:rgba(232,184,75,.07);border-color:rgba(232,184,75,.2);}
+.info-box.danger{background:rgba(196,69,112,.07);border-color:rgba(196,69,112,.25);}
+.info-box strong{color:var(--accent2);}
+.info-box.warn strong{color:var(--accent);}
+.info-box.danger strong{color:var(--danger);}
+
+/* COMPARISON COLUMNS */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0;}
+.compare-col{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.compare-col-header{padding:10px 16px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.compare-col-header.old{background:rgba(196,69,112,.12);color:var(--danger);}
+.compare-col-header.new{background:rgba(109,212,220,.1);color:var(--accent3);}
+.compare-col pre{padding:14px 16px;font-family:monospace;font-size:12.5px;line-height:1.7;background:var(--code-bg);}
+
+/* TIMELINE */
+.timeline{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0;}
+.timeline-item{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:12px;display:flex;flex-direction:column;align-items:center;min-width:80px;}
+.timeline-item.highlight{border-color:var(--accent);background:rgba(232,184,75,.1);}
+.timeline-year{font-weight:700;color:var(--accent);font-size:13px;}
+.timeline-ver{color:var(--text-muted);}
+
+/* TRY IT */
+.try-it{margin:24px 0 0;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.try-it-toggle{width:100%;padding:12px 18px;background:none;border:none;color:var(--accent2);font-size:13.5px;font-weight:600;cursor:pointer;text-align:left;display:flex;align-items:center;gap:8px;transition:background .15s;}
+.try-it-toggle:hover{background:var(--surface2);}
+.try-it-body{border-top:1px solid var(--border);}
+.inline-pg{padding:0;}
+.inline-pg-wrap{display:flex;background:var(--code-bg);position:relative;}
+.inline-line-nums{padding:14px 0 14px 10px;font-family:'Cascadia Code','Fira Code',monospace;font-size:13px;line-height:1.75;color:var(--comment);text-align:right;min-width:38px;user-select:none;background:var(--code-bg);}
+.inline-editor{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:'Cascadia Code','Fira Code','Courier New',monospace;font-size:13px;line-height:1.75;padding:14px 16px;resize:none;min-height:120px;tab-size:2;}
+.run-btn{display:block;width:100%;padding:10px;background:rgba(232,184,75,.1);border:none;border-top:1px solid var(--border);color:var(--accent);font-size:13px;font-weight:700;cursor:pointer;transition:background .15s;letter-spacing:.5px;}
+.run-btn:hover{background:rgba(232,184,75,.18);}
+.inline-output{padding:12px 16px;font-family:'Cascadia Code','Fira Code',monospace;font-size:12.5px;line-height:1.75;background:var(--bg);min-height:40px;max-height:200px;overflow-y:auto;border-top:1px solid var(--border);}
+.inline-output:empty{display:none;}
+
+/* OUTPUT STYLES */
+.pg-run-header{font-size:11px;color:var(--text-muted);margin-bottom:6px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.pg-run-time{color:var(--comment);}
+.pg-log{color:var(--text);padding:1px 0;}
+.pg-warn{color:var(--accent);}
+.pg-err-line{color:var(--danger);}
+.pg-success{color:var(--accent3);}
+.pg-error-card{background:rgba(196,69,112,.1);border:1px solid rgba(196,69,112,.3);border-radius:8px;padding:12px 14px;margin-top:8px;}
+.pg-error-header{display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap;margin-bottom:6px;}
+.pg-error-type-badge{background:var(--danger);color:white;font-size:11px;font-weight:700;padding:1px 8px;border-radius:10px;}
+.pg-error-msg{color:var(--danger);font-size:12.5px;}
+.pg-error-line{background:rgba(0,0,0,.3);border-radius:6px;padding:6px 10px;margin:6px 0;font-size:12px;display:flex;align-items:center;gap:10px;}
+.pg-error-linenum{color:var(--text-muted);font-size:11px;}
+.pg-error-line code{color:var(--text);}
+.pg-error-hint{font-size:12.5px;color:var(--text-muted);margin-top:4px;}
+
+/* FLOAT PLAYGROUND BUTTON */
+#float-pg-btn{position:fixed;bottom:28px;right:28px;width:52px;height:52px;border-radius:50%;background:var(--accent);color:var(--bg);font-size:18px;font-weight:900;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(232,184,75,.4);z-index:900;transition:transform .2s,box-shadow .2s;display:flex;align-items:center;justify-content:center;}
+#float-pg-btn:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(232,184,75,.55);}
+
+/* FLOAT PLAYGROUND PANEL */
+#float-pg-panel{position:fixed;bottom:92px;right:28px;width:640px;height:440px;background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.6);z-index:950;display:none;flex-direction:column;overflow:hidden;}
+#float-pg-panel.fullscreen{top:0!important;left:0!important;width:100vw!important;height:100vh!important;bottom:unset!important;right:unset!important;border-radius:0;}
+#float-pg-titlebar{padding:10px 14px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;cursor:move;user-select:none;flex-shrink:0;}
+#float-pg-titlebar>span{font-size:13px;font-weight:700;color:var(--accent);}
+.float-pg-controls{display:flex;align-items:center;gap:6px;}
+.float-pg-controls select{background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:12px;padding:4px 8px;border-radius:6px;outline:none;}
+.float-pg-controls button{background:var(--surface);border:1px solid var(--border);color:var(--text);font-size:12px;padding:4px 10px;border-radius:6px;cursor:pointer;transition:background .15s;}
+.float-pg-controls button:hover{background:var(--surface2);}
+#float-pg-body{flex:1;display:flex;overflow:hidden;}
+#float-pg-editor-wrap{flex:1;display:flex;background:var(--code-bg);overflow:hidden;}
+#float-pg-line-nums{padding:14px 4px 14px 10px;font-family:monospace;font-size:13px;line-height:1.75;color:var(--comment);min-width:36px;text-align:right;user-select:none;}
+#float-pg-editor{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:'Cascadia Code','Fira Code',monospace;font-size:13px;line-height:1.75;padding:14px 12px;resize:none;tab-size:2;}
+#float-pg-vdivider{width:4px;background:var(--border);cursor:col-resize;flex-shrink:0;}
+#float-pg-output-wrap{width:40%;background:var(--bg);overflow-y:auto;display:flex;flex-direction:column;}
+#float-pg-output{flex:1;padding:12px 14px;font-family:'Cascadia Code','Fira Code',monospace;font-size:12.5px;line-height:1.75;}
+#float-pg-resize-handle{position:absolute;bottom:0;right:0;width:16px;height:16px;cursor:se-resize;background:linear-gradient(135deg,transparent 50%,var(--border) 50%);border-radius:0 0 14px 0;}
+
+/* STANDALONE PLAYGROUND SECTION */
+#section-playground .pg-full{display:flex;flex-direction:column;gap:0;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;height:500px;}
+#section-playground .pg-full-top{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface2);border-bottom:1px solid var(--border);}
+#section-playground .pg-full-top select{background:var(--surface);border:1px solid var(--border);color:var(--text);padding:5px 10px;font-size:12.5px;border-radius:6px;outline:none;}
+#section-playground .pg-full-top button{padding:6px 14px;font-size:12.5px;font-weight:700;border-radius:6px;border:none;cursor:pointer;transition:background .15s;}
+.btn-run{background:var(--accent);color:var(--bg);}
+.btn-run:hover{background:#d4a540;}
+.btn-clear{background:var(--surface);border:1px solid var(--border)!important;color:var(--text-muted);}
+.btn-clear:hover{background:var(--surface2);}
+#section-playground .pg-full-body{flex:1;display:flex;overflow:hidden;}
+#pg-main-editor-wrap{flex:1;display:flex;background:var(--code-bg);}
+#pg-main-line-nums{padding:14px 4px 14px 10px;font-family:monospace;font-size:13px;line-height:1.75;color:var(--comment);min-width:38px;text-align:right;user-select:none;}
+#pg-main-editor{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:'Cascadia Code','Fira Code',monospace;font-size:13px;line-height:1.75;padding:14px 12px;resize:none;tab-size:2;}
+#pg-main-output{width:40%;background:var(--bg);overflow-y:auto;padding:12px 14px;font-family:'Cascadia Code','Fira Code',monospace;font-size:12.5px;line-height:1.75;border-left:1px solid var(--border);}
+
+/* MISC */
+h3{font-size:18px;font-weight:700;margin:28px 0 10px;color:var(--accent2);}
+h4{font-size:14px;font-weight:700;margin:18px 0 8px;color:var(--text-muted);letter-spacing:.5px;text-transform:uppercase;}
+p{font-size:14.5px;line-height:1.75;color:var(--text-muted);margin-bottom:12px;}
+ul{list-style:none;padding:0;}
+ul li{font-size:14px;color:var(--text-muted);padding:4px 0 4px 18px;position:relative;line-height:1.6;}
+ul li::before{content:"›";position:absolute;left:0;color:var(--accent);font-weight:700;}
+code{font-family:'Cascadia Code','Fira Code',monospace;background:var(--code-bg);border:1px solid var(--border);padding:1px 6px;border-radius:4px;font-size:12.5px;color:var(--accent3);}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div id="sidebar-logo">
+    <svg width="186" height="56" viewBox="0 0 186 56" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="28" cy="28" r="27" fill="white"/>
+      <text x="5" y="39" font-family="'Segoe UI',system-ui,sans-serif" font-size="30" font-weight="300" fill="#0c1828" letter-spacing="-1">sp</text>
+      <text x="53" y="37" font-family="'Segoe UI',system-ui,sans-serif" font-size="30" font-weight="300" fill="white" letter-spacing="-1">oon</text>
+      <text x="54" y="52" font-family="'Segoe UI',system-ui,sans-serif" font-size="14" font-weight="300" fill="rgba(255,255,255,0.75)" letter-spacing="1">consulting</text>
+    </svg>
+  </div>
+  <div id="sidebar-label">JS Bootcamp</div>
+  <div id="sidebar-nav">
+    <button class="nav-item active" onclick="goTo('intro',this)"><span class="nav-num">★</span> Welcome</button>
+    <button class="nav-item" onclick="goTo('whatisjs',this)"><span class="nav-num">1</span> What is JavaScript</button>
+    <button class="nav-item" onclick="goTo('variables',this)"><span class="nav-num">2</span> Variables</button>
+    <button class="nav-item" onclick="goTo('datatypes',this)"><span class="nav-num">3</span> Data Types</button>
+    <button class="nav-item" onclick="goTo('strings',this)"><span class="nav-num">4</span> Strings &amp; Templates</button>
+    <button class="nav-item" onclick="goTo('arrays',this)"><span class="nav-num">5</span> Arrays</button>
+    <button class="nav-item" onclick="goTo('objects',this)"><span class="nav-num">6</span> Objects</button>
+    <button class="nav-item" onclick="goTo('comparison',this)"><span class="nav-num">7</span> Comparison</button>
+    <button class="nav-item" onclick="goTo('control',this)"><span class="nav-num">8</span> Control Structures</button>
+    <button class="nav-item" onclick="goTo('loops',this)"><span class="nav-num">9</span> Loops</button>
+    <button class="nav-item" onclick="goTo('arrows',this)"><span class="nav-num">10</span> Arrow Functions</button>
+    <button class="nav-item" onclick="goTo('spread',this)"><span class="nav-num">11</span> Spread, Rest &amp; Default</button>
+    <button class="nav-item" onclick="goTo('es6',this)"><span class="nav-num">12</span> ES6+ Features</button>
+    <button class="nav-item" onclick="goTo('async',this)"><span class="nav-num">13</span> Promises &amp; Async</button>
+    <button class="nav-item" onclick="goTo('playground',this)"><span class="nav-num">⟨/⟩</span> Playground</button>
+  </div>
+  <div id="sidebar-footer">
+    <div id="progress-label"><span>Progress</span><span id="progress-pct">0%</span></div>
+    <div id="progress-bar-bg"><div id="progress-bar"></div></div>
+  </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div id="main">
+
+<!-- INTRO -->
+<section class="section" id="section-intro">
+  <div class="hero-eyebrow">Spoon Consulting · Annual IT Bootcamp</div>
+  <h1 class="hero-title">Learn <span>JavaScript</span><br>from Scratch</h1>
+  <p class="hero-sub">A hands-on guide to modern JavaScript — from variables to async/await. Each module has live code examples you can edit and run right here.</p>
+  <div class="hero-chips">
+    <span class="chip">14 Modules</span>
+    <span class="chip">Live Playgrounds</span>
+    <span class="chip">ES6+ Coverage</span>
+    <span class="chip">Error Explanations</span>
+    <span class="chip">No Setup Needed</span>
+  </div>
+</section>
+
+<!-- 1. WHAT IS JS -->
+<section class="section" id="section-whatisjs">
+  <div class="section-eyebrow">Module 1</div>
+  <h2 class="section-title">What is JavaScript?</h2>
+  <p class="section-desc">JavaScript is a lightweight, interpreted scripting language with first-class functions. It is the language of the web — but has grown far beyond the browser.</p>
+  <ul>
+    <li>Case-sensitive — <code>myVar</code> and <code>myvar</code> are different</li>
+    <li>Dynamically typed — variables can hold any type</li>
+    <li>Single-threaded with an event loop for async work</li>
+    <li>Runs in browsers, servers (Node.js), mobile, and more</li>
+  </ul>
+  <div class="card-grid" style="margin-top:24px;">
+    <div class="card"><div class="card-icon">🌐</div><div class="card-title">Web Interactivity</div><div class="card-desc">Animations, form validation, DOM manipulation, SPAs</div></div>
+    <div class="card"><div class="card-icon">📱</div><div class="card-title">Mobile Apps</div><div class="card-desc">React Native, Ionic — one codebase, multiple platforms</div></div>
+    <div class="card"><div class="card-icon">🖥️</div><div class="card-title">Servers (Node.js)</div><div class="card-desc">REST APIs, real-time apps, CLI tools with Node.js</div></div>
+    <div class="card"><div class="card-icon">🎮</div><div class="card-title">Game Dev</div><div class="card-desc">Browser games, WebGL, canvas-based 2D/3D engines</div></div>
+  </div>
+  <div class="try-it">
+    <button class="try-it-toggle" onclick="toggleTryIt(this)">▶ Try it yourself</button>
+    <div class="try-it-body" style="display:none">
+      <div class="inline-pg">
+        <div class="inline-pg-wrap">
+          <div class="inline-line-nums" id="lnum-whatisjs"></div>
+          <textarea class="inline-editor" id="ed-whatisjs" onkeydown="inlineKeydown(event,'whatisjs')" oninput="updateLineNums('whatisjs')">// JavaScript basics
+console.log("Hello, Bootcamp!");
+console.log(typeof 42);        // number
+console.log(typeof "hello");   // string
+console.log(typeof true);      // boolean
+console.log(typeof undefined); // undefined
+console.log(typeof null);      // object (quirk!)
+console.log(typeof {});        // object
+console.log(typeof []);        // object
+console.log(typeof function(){}); // function</textarea>
+        </div>
+        <button class="run-btn" onclick="runInline('whatisjs')">▶ Run (Ctrl+Enter)</button>
+        <div class="inline-output" id="out-whatisjs"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. VARIABLES -->
+<section class="section" id="section-variables">
+  <div class="section-eyebrow">Module 2</div>
+  <h2 class="section-title">Variables: var / let / const</h2>
+  <p class="section-desc">JavaScript has three ways to declare variables. Understanding their scoping rules is fundamental to writing bug-free code.</p>
+  <div class="info-box warn"><strong>Rule of thumb:</strong> Use <code>const</code> by default. Use <code>let</code> if you need to reassign. Avoid <code>var</code> — its function scope causes subtle bugs.</div>
+  <table class="styled-table">
+    <tr><th>Keyword</th><th>Scope</th><th>Reassignable</th><th>Hoisted</th><th>Use When</th></tr>
+    <tr><td><code>var</code></td><td>Function</td><td>✓</td><td>✓ (as undefined)</td><td><span class="badge badge-red">Avoid</span></td></tr>
+    <tr><td><code>let</code></td><td>Block</td><td>✓</td><td>✗ (TDZ)</td><td><span class="badge badge-yellow">Reassigning</span></td></tr>
+    <tr><td><code>const</code></td><td>Block</td><td>✗</td><td>✗ (TDZ)</td><td><span class="badge badge-green">Default</span></td></tr>
+  </table>
+  <h3>Scope Difference</h3>
+  <div class="compare-grid">
+    <div class="compare-col">
+      <div class="compare-col-header old">var — Function Scoped</div>
+      <pre>function testOne() {
+  if (true) {
+    var name = 'admin';
+  }
+  console.log(name); // "admin"
+  // var leaks out of the if block!
+}</pre>
+    </div>
+    <div class="compare-col">
+      <div class="compare-col-header new">let / const — Block Scoped</div>
+      <pre>function testTwo() {
+  if (true) {
+    let name = 'admin';
+    const id = 'user-123';
+  }
+  console.log(name); // ReferenceError
+  // let/const stay inside the block
+}</pre>
+    </div>
+  </div>
+  <h3>setTimeout Closure Trap</h3>
+  <div class="code-block">
+    <div class="code-block-header"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="code-block-label">var vs let in loops</span></div>
+    <pre>// With var — prints 6,6,6,6,6 (all same value)
+for (var i = 1; i &lt;= 5; i++) {
+  setTimeout(() =&gt; console.log(i), 100);
+}
+
+// With let — prints 1,2,3,4,5 (each iteration captured)
+for (let j = 1; j &lt;= 5; j++) {
+  setTimeout(() =&gt; console.log(j), 100);
+}</pre>
+  </div>
+  <div class="try-it">
+    <button class="try-it-toggle" onclick="toggleTryIt(this)">▶ Try it yourself</button>
+    <div class="try-it-body" style="display:none">
+      <div class="inline-pg">
+        <div class="inline-pg-wrap">
+          <div class="inline-line-nums" id="lnum-variables"></div>
+          <textarea class="inline-editor" id="ed-variables" onkeydown="inlineKeydown(event,'variables')" oninput="updateLineNums('variables')">const name = "Alice";
+let age = 25;
+// const name = "Bob"; // Error: already declared
+age = 26; // OK — let can be reassigned
+
+console.log(name, age);
+
+// Block scope demo
+{
+  let blockVar = "I am block scoped";
+  const blockConst = 42;
+  console.log(blockVar, blockConst);
+}
+// console.log(blockVar); // Would throw ReferenceError</textarea>
+        </div>
+        <button class="run-btn" onclick="runInline('variables')">▶ Run (Ctrl+Enter)</button>
+        <div class="inline-output" id="out-variables"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. DATA TYPES -->
+<section class="section" id="section-datatypes">
+  <div class="section-eyebrow">Module 3</div>
+  <h2 class="section-title">Data Types</h2>
+  <p class="section-desc">JavaScript has 8 data types: 7 primitives and 1 object type. Understanding the difference between <code>undefined</code>, <code>null</code>, and empty string prevents many bugs.</p>
+  <table class="styled-table">
+    <tr><th>Type</th><th>Example</th><th>typeof</th><th>When to use</th></tr>
+    <tr><td>String</td><td><code>"hello"</code></td><td><code>"string"</code></td><td>Text data</td></tr>
+    <tr><td>Number</td><td><code>42, 3.14</code></td><td><code>"number"</code></td><td>Any numeric value</td></tr>
+    <tr><td>Boolean</td><td><code>true, false</code></td><td><code>"boolean"</code></td><td>On/off flags</td></tr>
+    <tr><td>Undefined</td><td><code>undefined</code></td><td><code>"undefined"</code></td><td>Declared, not assigned</td></tr>
+    <tr><td>Null</td><td><code>null</code></td><td><code>"object"</code> ⚠</td><td>Intentional empty object</td></tr>
+    <tr><td>BigInt</td><td><code>9007199254740991n</code></td><td><code>"bigint"</code></td><td>Integers beyond 2^53</td></tr>
+    <tr><td>Symbol</td><td><code>Symbol("id")</code></td><td><code>"symbol"</code></td><td>Unique identifiers</td></tr>
+    <tr><td>Object</td><td><code>{}, [], function</code></td><td><code>"object"</code></td><td>Structured data</td></tr>
+  </table>
+  <h3>Undefined vs Null vs Empty String</h3>
+  <div class="code-block">
+    <div class="code-block-header"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="code-block-label">special values</span></div>
+    <pre>let a;                    // undefined — declared but not assigned
+function greet(name) {
+  console.log(name);      // undefined if no arg passed
+}
+const user = null;        // null — intentional "no object here"
+const str = "";           // empty string — a string with no characters
+
+// Checking for null/undefined
+console.log(a == null);   // true (loose — catches both null and undefined)
+console.log(a === undefined); // true (strict — only undefined)
+console.log(user === null);   // true
+
+// instanceof
+console.log([] instanceof Array);   // true
+console.log({} instanceof Object);  // true</pre>
+  </div>
+  <div class="try-it">
+    <button class="try-it-toggle" onclick="toggleTryIt(this)">▶ Try it yourself</button>
+    <div class="try-it-body" style="display:none">
+      <div class="inline-pg">
+        <div class="inline-pg-wrap">
+          <div class="inline-line-nums" id="lnum-datatypes"></div>
+          <textarea class="inline-editor" id="ed-datatypes" onkeydown="inlineKeydown(event,'datatypes')" oninput="updateLineNums('datatypes')">// Explore data types
+let x;
+console.log("x =", x, "| typeof:", typeof x); // undefined
+
+const y = null;
+console.log("y =", y, "| typeof:", typeof y); // object (quirk)
+
+const z = "";
+console.log("z =", JSON.stringify(z), "| typeof:", typeof z);
+
+// Falsy values in JS
+const falsyValues = [false, 0, "", null, undefined, NaN];
+falsyValues.forEach(v => {
+  console.log(JSON.stringify(v), "is falsy:", !v);
+});</textarea>
+        </div>
+        <button class="run-btn" onclick="runInline('datatypes')">▶ Run (Ctrl+Enter)</button>
+        <div class="inline-output" id="out-datatypes"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. STRINGS -->
+<section class="section" id="section-strings">
+  <div class="section-eyebrow">Module 4</div>
+  <h2 class="section-title">Strings &amp; Template Literals</h2>
+  <p class="section-desc">Template literals (backtick strings) make string construction clean and readable — no more messy concatenation.</p>
+  <div class="compare-grid">
+    <div class="compare-col">
+      <div class="compare-col-header old">Old: Concatenation</div>
+      <pre>const name = "Alice";
+const age = 30;
+const msg = "Hello, " + name +
+  "! You are " + age + " years old.";</pre>
+    </div>
+    <div class="compare-col">
+      <div class="compare-col-header new">ES6: Template Literal</div>
+      <pre>const name = "Alice";
+const age = 30;
+const msg = `Hello, ${name}!
+You are ${age} years old.`;</pre>
+    </div>
+  </div>
+  <div class="code-block">
+    <div class="code-block-header"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="code-block-label">expressions &amp; methods</span></div>
+    <pre>const price = 19.99, tax = 0.07;
+const total = `The total price is ${price + (price * tax)}`;
+console.log(total); // "The total price is 21.3893"
+
+// String methods
+const str = "JavaScript";
+console.log(str.startsWith("Java")); // true
+console.log(str.endsWith("Script")); // true
+console.log(str.includes("vaS"));    // true
+console.log("ha".repeat(3));         // "hahaha"
+console.log(str.toUpperCase());      // "JAVASCRIPT"
+console.log(str.slice(4, 10));       // "Script"
+console.log("  hello  ".trim());     // "hello"</pre>
+  </div>
+  <div class="try-it">
+    <button class="try-it-toggle" onclick="toggleTryIt(this)">▶ Try it yourself</button>
+    <div class="try-it-body" style="display:none">
+      <div class="inline-pg">
+        <div class="inline-pg-wrap">
+          <div class="inline-line-nums" id="lnum-strings"></div>
+          <textarea class="inline-editor" id="ed-strings" onkeydown="inlineKeydown(event,'strings')" oninput="updateLineNums('strings')">const firstName = "Ada";
+const lastName = "Lovelace";
+const year = 1815;
+
+// Template literal
+const bio = `${firstName} ${lastName} was born in ${year}.
+She is considered the first computer programmer.`;
+console.log(bio);
+
+// String methods
+console.log(bio.includes("first"));     // true
+console.log(firstName.padStart(8, "*")); // "***Ada"
+console.log("JS ".repeat(3).trim());    // "JS JS JS"
+
+// Destructuring a string
+const [first, second, ...rest] = "Hello";
+console.log(first, second, rest.join(""));</textarea>
+        </div>
+        <button class="run-btn" onclick="runInline('strings')">▶ Run (Ctrl+Enter)</button>
+        <div class="inline-output" id="out-strings"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. ARRAYS -->
+<section class="section" id="section-arrays">
+  <div class="section-eyebrow">Module 5</div>
+  <h2 class="section-title">Arrays</h2>
+  <p class="section-desc">Arrays store ordered lists. Modern JavaScript gives you powerful methods to transform them without mutations.</p>
+  <div class="code-block">
+    <div class="code-block-header"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="code-block-label">array basics &amp; destructuring</span></div>
+    <pre>const fruits = ["apple", "banana", "cherry"];
+console.log(fruits[0]);   // "apple"
+console.log(fruits.length); // 3
+
+// Destructuring
+const details = ["Alice", "Smith", "spoon.com"];
+const [first, last, website] = details;
+console.log(first, last, website);
+
+// Skip elements with commas
+const [,, site] = details;
+console.log(site); // "spoon.com"</pre>
+  </div>
+  <h3>Array Methods</h3>
+  <div class="code-block">
+    <div class="code-block-header"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="code-block-label">filter · map · reduce · find</span></div>
+    <pre>const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+// filter — returns new array of matches
+const evens = nums.filter(n => n % 2 === 0);
+console.log(evens); // [2,4,6,8,10]
+
+// map — transforms each element
+const doubled = nums.map(n => n * 2);
+console.log(doubled); // [2,4,6,...,20]
+
+// reduce — accumulate to single value
+const sum = nums.reduce((acc, n) => acc + n, 0);
+console.log(sum); // 55
+
+// find / findIndex
+const firstBig = nums.find(n => n > 5);
+console.log(firstBig); // 6
+
+// Chaining
+const result = nums
+  .filter(n => n % 2 === 0)
+  .map(n => n * 10)
+  .reduce((a, b) => a + b, 0);
+console.log(result); // 300</pre>
+  </div>
+  <div class="try-it">
+    <button class="try-it-toggle" onclick="toggleTryIt(this)">▶ Try it yourself</button>
+    <div class="try-it-body" style="display:none">
+      <div class="inline-pg">
+        <div class="inline-pg-wrap">
+          <div class="inline-line-nums" id="lnum-arrays"></div>
+          <textarea class="inline-editor" id="ed-arrays" onkeydown="inlineKeydown(event,'arrays')" oninput="updateLineNums('arrays')">const people = [
+  { name: "Alice", age: 28 },
+  { name: "Bob", age: 34 },
+  { name: "Carol", age: 22 },
+  { name: "Dave", age: 31 }
+];
+
+// Get names of people older than 25
+const names = people
+  .filter(p => p.age > 25)
+  .map(p => p.name);
+console.log(names);
+
+// Average age
+const avgAge = people.reduce((sum, p) => sum + p.age, 0) / people.length;
+console.log("Average age:", avgAge);
+
+// Array.from
+const range = Array.from({ length: 5 }, (_, i) => i + 1);
+console.log(range); // [1,2,3,4,5]</textarea>
+        </div>
+        <button class="run-btn" onclick="runInline('arrays')">▶ Run (Ctrl+Enter)</button>
+        <div class="inline-output" id="out-arrays"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. OBJECTS -->
+<section class="section" id="section-objects">
+  <div class="section-eyebrow">Module 6</div>
+  <h2 class="section-title">Objects</h2>
+  <p class="section-desc">Objects are the core data structure in JavaScript — key-value pairs that can hold any type, including functions.</p>
+  <div class="code-block">
+    <div class="code-block-header"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="code-block-label">object literals &amp; access</span></div>
+    <pre>const person = {
+  firstName: "Ada",
+  lastName: "Lovelace",
+  age: 36,
+  greet() { return `Hi, I'm ${this.firstName}`; }
+};
+
+// Dot notation
+console.log(person.firstName); // "Ada"
+// Bracket notation (dynamic keys)
+const key = "age";
+console.log(person[key]); // 36</pre>
+  </div>
+  <h3>Destructuring</h3>
+  <div class="code-block">
+    <div class="code-block-header"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="code-block-label">rename &amp; defaults</span></div>
+    <pre>// Rename during destructuring
+const { firstName: fName, lastName: lName } = person;
+console.log(fName); // "Ada"
+
+// Default values
+const settings = { theme: "dark" };
+const { theme, width = 200 } = settings;
+console.log(theme, width); // "dark" 200</pre>
+  </div>
+  <h3>Enhanced Object Literals (ES6)</h3>
+  <div class="compare-grid">
+    <div class="compare-col">
+      <div class="compare-col-header old">Old ES5 Style</div>
+      <pre>const x = 10, y = 20;
+const point = { x: x, y: y };
+
+const obj = {
+  greet: function() {
+    return "hello";
+  }
+};</pre>
+    </div>
+    <div class="compare-col">
+      <div class="compare-col-header new">ES6 Shorthand</div>
+      <pre>const x = 10, y = 20;
+const point = { x, y }; // shorthand!
+
+const obj = {
+  greet() {
+    return "hello";
+  } // method shorthand
+};</pre>
+    </div>
+  </div>
+  <div class="try-it">
+    <button class="try-it-toggle" onclick="toggleTryIt(this)">▶ Try it yourself</button>
+    <div class="try-it-body" style="display:none">
+      <div class="inline-pg">
+        <div class="inline-pg-wrap">
+          <div class="inline-line-nums" id="lnum-objects"></div>
+          <textarea class="inline-editor" id="ed-objects" onkeydown="inlineKeydown(event,'objects')" oninput="updateLineNums('objects')">const employee = {
+  name: "Sam",
+  role: "Developer",
+  department: "Engineering",
+  skills: ["JS", "React", "Node"]
+};
+
+// Destructuring with rename and default
+const { name: empName, role, salary = 60000 } = employee;
+console.log(empName, role, salary);
+
+// Spread to clone/merge
+const updated = { ...employee, role: "Senior Developer", salary: 80000 };
+console.log(updated.role, updated.salary);
+
+// Object.keys, values, entries
+console.log(Object.keys(employee));
+Object.entries(employee).forEach(([k, v]) => {
+  if (typeof v === "string") console.log(`${k}: ${v}`);
+});</textarea>
+        </div>
+        <button class="run-btn" onclick="runInline('objects')">▶ Run (Ctrl+Enter)</button>
+        <div class="inline-output" id="out-objects"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7. COMPARISON -->
+<section class="section" id="section-comparison">
+  <div class="section-eyebrow">Module 7</div>
+  <h2 class="section-title">Comparison: == vs ===</h2>
+  <p class="section-desc"><code>==</code> is the loose equality operator — it coerces types before comparing. <code>===</code> is strict equality — no type coercion. Always prefer <code>===</code>.</p>
+  <table class="styled-table">
+    <tr><th>Expression</th><th>Result</th><th>Why</th></tr>
+    <tr><td><code>1 == "1"</code></td><td><span class="badge badge-green">true</span></td><td>String "1" coerced to number 1</td></tr>
+    <tr><td><code>1 === "1"</code></td><td><span class="badge badge-red">false</span></td><td>Different types, no coercion</td></tr>
+    <tr><td><code>1 === 1</code></td><td><span class="badge badge-green">true</span></td><td>Same type, same value</td></tr>
+    <tr><td><code>1 == true</code></td><td><span class="badge badge-green">true</span></td><td>true coerced to 1</td></tr>
+    <tr><td><code>1 === true</code></td><td><span class="badge badge-red">false</span></td><td>Number !== Boolean</td></tr>
+    <tr><td><code>null == undefined</code></td><td><span class="badge badge-green">true</span></td><td>Special case in spec</td></tr>
+    <tr><td><code>null === undefined</code></td><td><span class="badge badge-red">false</span></td><td>Different types</td></tr>
+    <tr><td><code>NaN === NaN</code></td><td><span class="badge badge-red">false</span></td><td>NaN never equals anything</td></tr>
+    <tr><td><code>[] == false</code></td><td><span class="badge badge-green">true</span></td><td>Complex coercion chain</td></tr>
+    <tr><td><code>[] === false</code></td><td><span class="badge badge-red">false</span></td><td>Object !== Boolean</td></tr>
+  </table>
+  <div class="info-box danger"><strong>Always use ===</strong> unless you explicitly want type coercion (rare). The loose == operator has surprising edge cases that cause real bugs in production.</div>
+  <div class="try-it">
+    <button class="try-it-toggle" onclick="toggleTryIt(this)">▶ Try it yourself</button>
+    <div class="try-it-body" style="display:none">
+      <div class="inline-pg">
+        <div class="inline-pg-wrap">
+          <div class="inline-line-nums" id="lnum-comparison"></div>
+          <textarea class="inline-editor" id="ed-comparison" onkeydown="inlineKeydown(event,'comparison')" oninput="updateLineNums('comparison')">// Test the equality operators
+console.log("== comparisons:");
+console.log(0 == false);   // true
+console.log("" == false);  // true
+console.log(null == undefined); // true
+
+console.log("\n=== comparisons:");
+console.log(0 === false);  // false
+console.log("" === false); // false
+
+// Safe null check
+function process(value) {
+  if (value == null) { // catches both null and undefined
+    console.log("No value provided");
+    return;
+  }
+  console.log("Processing:", value);
+}
+process(null);
+process(undefined);
+process(42);</textarea>
+        </div>
+        <button class="run-btn" onclick="runInline('comparison')">▶ Run (Ctrl+Enter)</button>
+        <div class="inline-output" id="out-comparison"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8. CONTROL STRUCTURES -->
+<section class="section" id="section-control">
+  <div class="section-eyebrow">Module 8</div>
+  <h2 class="section-title">Control Structures</h2>
+  <p class="section-desc">Control structures let you make decisions in your code. <code>if/else</code> for conditions, <code>switch</code> for multi-branch matching.</p>
+  <div class="compare-grid">
+    <div class="compare-col">
+      <div class="compare-col-header new">if / else if / else</div>
+      <pre>const hour = new Date().getHours();
+let greeting;
+
+if (hour &lt; 12) {
+  greeting = "Good morning";
+} else if (hour &lt; 18) {
+  greeting = "Good afternoon";
+} else {
+  greeting = "Good evening";
+}
+console.log(greeting);</pre>
+    </div>
+    <div class="compare-col">
+      <div class="compare-col-header new">switch</div>
+      <pre>const day = new Date().getDay();
+let type;
+
+switch (day) {
+  case 0:
+  case 6:
+    type = "Weekend!";
+    break;
+  default:
+    type = "Weekday";
+}
+console.log(type);</pre>
+    </div>
+  </div>
+  <div class="info-box"><strong>Ternary operator</strong> — a compact one-liner: <code>const label = age &gt;= 18 ? "adult" : "minor";</code></div>
+  <div class="try-it">
+    <button class="try-it-toggle" onclick="toggleTryIt(this)">▶ Try it yourself</button>
+    <div class="try-it-body" style="display:none">
+      <div class="inline-pg">
+        <div class="inline-pg-wrap">
+          <div class="inline-line-nums" id="lnum-control"></div>
+          <textarea class="inline-editor" id="ed-control" onkeydown="inlineKeydown(event,'control')" oninput="updateLineNums('control')">// Grade classifier
+function getGrade(score) {
+  if (score >= 90) return "A";
+  else if (score >= 80) return "B";
+  else if (score >= 70) return "C";
+  else if (score >= 60) return "D";
+  else return "F";
+}
+
+[95, 82, 71, 60, 45].forEach(score => {
+  console.log(`Score ${score} → Grade ${getGrade(score)}`);
+});
+
+// Nullish coalescing
+const user = null;
+const displayName = user?.name ?? "Anonymous";
+console.log(displayName);</textarea>
+        </div>
+        <button class="run-btn" onclick="runInline('control')">▶ Run (Ctrl+Enter)</button>
+        <div class="inline-output" id="out-control"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 9. LOOPS -->
+<section class="section" id="section-loops">
+  <div class="section-eyebrow">Module 9</div>
+  <h2 class="section-title">Loops</h2>
+  <p class="section-desc">JavaScript provides multiple loop types. Choose the one that fits your data structure and intent.</p>
+  <div class="code-block">
+    <div class="code-block-header"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="code-block-label">all loop types</span></div>
+    <pre>// Classic for loop
+for (let i = 0; i &lt; 3; i++) {
+  console.log("for:", i);
+}
+
+// for...of (arrays, strings, iterables)
+const colors = ["red", "green", "blue"];
+for (const color of colors) {
+  console.log("color:", color);
+}
+
+// for...in (object keys)
+const obj = { a: 1, b: 2, c: 3 };
+for (const key in obj) {
+  console.log("key:", key, "value:", obj[key]);
+}
+
+// while
+let count = 0;
+while (count &lt; 3) {
+  console.log("while:", count++);
+}
+
+// do...while (always runs at least once)
+let n = 5;
+do {
+  console.log("do-while:", n);
+  n++;
+} while (n &lt; 3); // condition false — still ran once</pre>
+  </div>
+  <div class="try-it">
+    <button class="try-it-toggle" onclick="toggleTryIt(this)">▶ Try it yourself</button>
+    <div class="try-it-body" style="display:none">
+      <div class="inline-pg">
+        <div class="inline-pg-wrap">
+          <div class="inline-line-nums" id="lnum-loops"></div>
+          <textarea class="inline-editor" id="ed-loops" onkeydown="inlineKeydown(event,'loops')" oninput="updateLineNums('loops')">// FizzBuzz with a loop
+for (let i = 1; i <= 20; i++) {
+  if (i % 15 === 0) console.log("FizzBuzz");
+  else if (i % 3 === 0) console.log("Fizz");
+  else if (i % 5 === 0) console.log("Buzz");
+  else console.log(i);
+}</textarea>
+        </div>
+        <button class="run-btn" onclick="runInline('loops')">▶ Run (Ctrl+Enter)</button>
+        <div class="inline-output" id="out-loops"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10. ARROW FUNCTIONS -->
+<section class="section" id="section-arrows">
+  <div class="section-eyebrow">Module 10</div>
+  <h2 class="section-title">Arrow Functions</h2>
+  <p class="section-desc">Arrow functions provide a concise syntax and lexically bind <code>this</code> — meaning they inherit <code>this</code> from the surrounding scope.</p>
+  <div class="code-block">
+    <div class="code-block-header"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="code-block-label">evolution of function syntax</span></div>
+    <pre>// Traditional function
+function add(a, b) { return a + b; }
+
+// Arrow function
+const add = (a, b) => { return a + b; };
+
+// Concise body (single expression — implicit return)
+const add = (a, b) => a + b;
+
+// Single parameter (no parens needed)
+const double = n => n * 2;
+
+// No parameters
+const greet = () => "Hello!";
+
+// Return an object literal (wrap in parens)
+const makeUser = name => ({ name, createdAt: Date.now() });</pre>
+  </div>
+  <h3>this Context</h3>
+  <div class="compare-grid">
+    <div class="compare-col">
+      <div class="compare-col-header old">Regular function — own this</div>
+      <pre>const timer = {
+  id: 42,
+  start() {
+    setTimeout(function() {
+      // `this` is NOT timer here
+      console.log(this.id); // undefined
+    }, 100);
+  }
+};</pre>
+    </div>
+    <div class="compare-col">
+      <div class="compare-col-header new">Arrow function — lexical this</div>
+      <pre>const timer = {
+  id: 42,
+  start() {
+    setTimeout(() => {
+      // `this` IS timer here
+      console.log(this.id); // 42
+    }, 100);
+  }
+};</pre>
+    </div>
+  </div>
+  <div class="info-box danger"><strong>Do NOT use arrow functions for:</strong> object methods (where you need <code>this</code> to be the object), event listeners where you need <code>this</code> to be the element, or constructor functions.</div>
+  <div class="try-it">
+    <button class="try-it-toggle" onclick="toggleTryIt(this)">▶ Try it yourself</button>
+    <div class="try-it-body" style="display:none">
+      <div class="inline-pg">
+        <div class="inline-pg-wrap">
+          <div class="inline-line-nums" id="lnum-arrows"></div>
+          <textarea class="inline-editor" id="ed-arrows" onkeydown="inlineKeydown(event,'arrows')" oninput="updateLineNums('arrows')">// Arrow function examples
+const multiply = (a, b) => a * b;
+const square = n => n ** 2;
+const isEven = n => n % 2 === 0;
+
+console.log(multiply(6, 7));
+console.log(square(9));
+console.log([1,2,3,4,5].filter(isEven));
+
+// Implicit return of object
+const makePoint = (x, y) => ({ x, y });
+console.log(makePoint(3, 4));
+
+// With array methods
+const numbers = [1, 2, 3, 4, 5];
+const result = numbers
+  .filter(n => n > 2)
+  .map(n => n * 10);
+console.log(result);</textarea>
+        </div>
+        <button class="run-btn" onclick="runInline('arrows')">▶ Run (Ctrl+Enter)</button>
+        <div class="inline-output" id="out-arrows"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 11. SPREAD REST DEFAULT -->
+<section class="section" id="section-spread">
+  <div class="section-eyebrow">Module 11</div>
+  <h2 class="section-title">Spread, Rest &amp; Default Args</h2>
+  <p class="section-desc">Three related features that make working with functions and collections much more flexible.</p>
+  <h3>Default Arguments</h3>
+  <div class="compare-grid">
+    <div class="compare-col">
+      <div class="compare-col-header old">Old way</div>
+      <pre>function greet(name) {
+  name = name || "World";
+  return `Hello, ${name}!`;
+}</pre>
+    </div>
+    <div class="compare-col">
+      <div class="compare-col-header new">ES6 Default Params</div>
+      <pre>function greet(name = "World") {
+  return `Hello, ${name}!`;
+}
+greet();        // "Hello, World!"
+greet("Alice"); // "Hello, Alice!"</pre>
+    </div>
+  </div>
+  <h3>Spread Operator <code>...</code></h3>
+  <div class="code-block">
+    <div class="code-block-header"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="code-block-label">spread uses</span></div>
+    <pre>// 1. Spread in function call
+const nums = [1, 5, 3];
+console.log(Math.max(...nums)); // 5
+
+// 2. Combine arrays
+const a = [1, 2, 3], b = [4, 5, 6];
+const combined = [...a, ...b]; // [1,2,3,4,5,6]
+
+// 3. Copy array (shallow)
+const copy = [...a];
+
+// 4. Clone and extend object
+const base = { color: "blue", size: 10 };
+const extended = { ...base, size: 20, weight: 5 };</pre>
+  </div>
+  <h3>Rest Operator <code>...</code></h3>
+  <div class="code-block">
+    <div class="code-block-header"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="code-block-label">rest params</span></div>
+    <pre>function doMath(operator, ...numbers) {
+  if (operator === "sum")
+    return numbers.reduce((a, b) => a + b, 0);
+  if (operator === "product")
+    return numbers.reduce((a, b) => a * b, 1);
+}
+console.log(doMath("sum", 1, 2, 3, 4));     // 10
+console.log(doMath("product", 2, 3, 4));    // 24</pre>
+  </div>
+  <div class="try-it">
+    <button class="try-it-toggle" onclick="toggleTryIt(this)">▶ Try it yourself</button>
+    <div class="try-it-body" style="display:none">
+      <div class="inline-pg">
+        <div class="inline-pg-wrap">
+          <div class="inline-line-nums" id="lnum-spread"></div>
+          <textarea class="inline-editor" id="ed-spread" onkeydown="inlineKeydown(event,'spread')" oninput="updateLineNums('spread')">// Default args
+function createUser(name, role = "viewer", active = true) {
+  return { name, role, active };
+}
+console.log(createUser("Alice"));
+console.log(createUser("Bob", "admin"));
+
+// Spread
+const team1 = ["Alice", "Bob"];
+const team2 = ["Carol", "Dave"];
+const allTeam = [...team1, ...team2];
+console.log(allTeam);
+
+// Rest
+function logAll(first, ...rest) {
+  console.log("First:", first);
+  console.log("Rest:", rest);
+}
+logAll("a", "b", "c", "d");</textarea>
+        </div>
+        <button class="run-btn" onclick="runInline('spread')">▶ Run (Ctrl+Enter)</button>
+        <div class="inline-output" id="out-spread"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 12. ES6 -->
+<section class="section" id="section-es6">
+  <div class="section-eyebrow">Module 12</div>
+  <h2 class="section-title">ES6+ Features</h2>
+  <p class="section-desc">ECMAScript is the standard that defines JavaScript. New versions bring powerful features — most modern JS uses ES6+ syntax.</p>
+  <h3>Version Timeline</h3>
+  <div class="timeline">
+    <div class="timeline-item"><span class="timeline-year">1997</span><span class="timeline-ver">ES1</span></div>
+    <div class="timeline-item"><span class="timeline-year">1998</span><span class="timeline-ver">ES2</span></div>
+    <div class="timeline-item"><span class="timeline-year">1999</span><span class="timeline-ver">ES3</span></div>
+    <div class="timeline-item"><span class="timeline-year">2009</span><span class="timeline-ver">ES5</span></div>
+    <div class="timeline-item highlight"><span class="timeline-year">2015</span><span class="timeline-ver">ES6</span></div>
+    <div class="timeline-item"><span class="timeline-year">2016</span><span class="timeline-ver">ES7</span></div>
+    <div class="timeline-item"><span class="timeline-year">2017</span><span class="timeline-ver">ES8</span></div>
+    <div class="timeline-item"><span class="timeline-year">2018</span><span class="timeline-ver">ES9</span></div>
+    <div class="timeline-item"><span class="timeline-year">2019</span><span class="timeline-ver">ES10</span></div>
+    <div class="timeline-item"><span class="timeline-year">2020</span><span class="timeline-ver">ES11</span></div>
+    <div class="timeline-item"><span class="timeline-year">2021</span><span class="timeline-ver">ES12</span></div>
+    <div class="timeline-item"><span class="timeline-year">2022</span><span class="timeline-ver">ES13</span></div>
+    <div class="timeline-item"><span class="timeline-year">2023</span><span class="timeline-ver">ES14</span></div>
+    <div class="timeline-item highlight"><span class="timeline-year">2024</span><span class="timeline-ver">ES15</span></div>
+  </div>
+  <h3>ES Modules</h3>
+  <div class="compare-grid">
+    <div class="compare-col">
+      <div class="compare-col-header new">Named Exports</div>
+      <pre>// math.js
+export const PI = 3.14159;
+export function add(a, b) { return a + b; }
+
+// main.js
+import { PI, add } from "./math.js";
+import { add as sum } from "./math.js";</pre>
+    </div>
+    <div class="compare-col">
+      <div class="compare-col-header new">Default Export</div>
+      <pre>// greet.js
+export default function greet(name) {
+  return `Hello, ${name}!`;
+}
+
+// main.js
+import greet from "./greet.js";
+import sayHello from "./greet.js"; // any name</pre>
+    </div>
+  </div>
+  <h3>Classes</h3>
+  <div class="code-block">
+    <div class="code-block-header"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="code-block-label">class · extends · super · get/set</span></div>
+    <pre>class Animal {
+  #sound; // private field
+  constructor(name, sound) {
+    this.name = name;
+    this.#sound = sound;
+  }
+  speak() {
+    return `${this.name} says ${this.#sound}!`;
+  }
+  get info() { return `Animal: ${this.name}`; }
+}
+
+class Dog extends Animal {
+  #tricks = [];
+  constructor(name) {
+    super(name, "woof");
+  }
+  learn(trick) {
+    this.#tricks.push(trick);
+    return this;
+  }
+  showTricks() {
+    return `${this.name} knows: ${this.#tricks.join(", ")}`;
+  }
+}
+
+const rex = new Dog("Rex");
+console.log(rex.speak());            // "Rex says woof!"
+console.log(rex.info);               // "Animal: Rex"
+rex.learn("sit").learn("shake");
+console.log(rex.showTricks());</pre>
+  </div>
+  <div class="try-it">
+    <button class="try-it-toggle" onclick="toggleTryIt(this)">▶ Try it yourself</button>
+    <div class="try-it-body" style="display:none">
+      <div class="inline-pg">
+        <div class="inline-pg-wrap">
+          <div class="inline-line-nums" id="lnum-es6"></div>
+          <textarea class="inline-editor" id="ed-es6" onkeydown="inlineKeydown(event,'es6')" oninput="updateLineNums('es6')">class Shape {
+  constructor(color = "white") {
+    this.color = color;
+  }
+  area() { return 0; }
+  describe() {
+    return `A ${this.color} shape with area ${this.area().toFixed(2)}`;
+  }
+}
+
+class Circle extends Shape {
+  constructor(radius, color) {
+    super(color);
+    this.radius = radius;
+  }
+  area() { return Math.PI * this.radius ** 2; }
+}
+
+class Rectangle extends Shape {
+  constructor(w, h, color) {
+    super(color);
+    this.width = w; this.height = h;
+  }
+  area() { return this.width * this.height; }
+}
+
+const c = new Circle(5, "blue");
+const r = new Rectangle(4, 6, "red");
+console.log(c.describe());
+console.log(r.describe());
+console.log(c instanceof Shape, c instanceof Circle);</textarea>
+        </div>
+        <button class="run-btn" onclick="runInline('es6')">▶ Run (Ctrl+Enter)</button>
+        <div class="inline-output" id="out-es6"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 13. ASYNC -->
+<section class="section" id="section-async">
+  <div class="section-eyebrow">Module 13</div>
+  <h2 class="section-title">Promises &amp; Async/Await</h2>
+  <p class="section-desc">JavaScript is single-threaded. Promises and async/await let you handle asynchronous operations without blocking the main thread.</p>
+  <h3>Promises</h3>
+  <div class="code-block">
+    <div class="code-block-header"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="code-block-label">promise basics</span></div>
+    <pre>// Creating a promise
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function fetchUser(id) {
+  return new Promise((resolve, reject) => {
+    if (id > 0) {
+      resolve({ id, name: "Alice", role: "dev" });
+    } else {
+      reject(new Error("Invalid user ID"));
+    }
+  });
+}
+
+// .then / .catch chain
+fetchUser(1)
+  .then(user => {
+    console.log("Got user:", user.name);
+    return user.role;
+  })
+  .then(role => console.log("Role:", role))
+  .catch(err => console.error("Error:", err.message))
+  .finally(() => console.log("Done!"));</pre>
+  </div>
+  <h3>Async/Await</h3>
+  <div class="compare-grid">
+    <div class="compare-col">
+      <div class="compare-col-header old">.then() chains</div>
+      <pre>function loadData() {
+  fetch("/api/users")
+    .then(res => res.json())
+    .then(data => {
+      console.log(data);
+    })
+    .catch(err => {
+      console.error(err);
+    });
+}</pre>
+    </div>
+    <div class="compare-col">
+      <div class="compare-col-header new">async/await</div>
+      <pre>async function loadData() {
+  try {
+    const res = await fetch("/api/users");
+    const data = await res.json();
+    console.log(data);
+  } catch (err) {
+    console.error(err);
+  }
+}</pre>
+    </div>
+  </div>
+  <div class="try-it">
+    <button class="try-it-toggle" onclick="toggleTryIt(this)">▶ Try it yourself</button>
+    <div class="try-it-body" style="display:none">
+      <div class="inline-pg">
+        <div class="inline-pg-wrap">
+          <div class="inline-line-nums" id="lnum-async"></div>
+          <textarea class="inline-editor" id="ed-async" onkeydown="inlineKeydown(event,'async')" oninput="updateLineNums('async')">// Simulated async with setTimeout
+function wait(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function runSteps() {
+  console.log("Step 1: Starting...");
+  await wait(50);
+  console.log("Step 2: After 50ms delay");
+  await wait(50);
+  console.log("Step 3: Done!");
+  return "All steps completed";
+}
+
+// Promise.all — run in parallel
+async function parallel() {
+  const results = await Promise.all([
+    Promise.resolve("A"),
+    Promise.resolve("B"),
+    Promise.resolve("C")
+  ]);
+  console.log("Parallel results:", results);
+}
+
+runSteps().then(msg => console.log(msg));
+parallel();</textarea>
+        </div>
+        <button class="run-btn" onclick="runInline('async')">▶ Run (Ctrl+Enter)</button>
+        <div class="inline-output" id="out-async"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 14. PLAYGROUND -->
+<section class="section" id="section-playground">
+  <div class="section-eyebrow">Module 14</div>
+  <h2 class="section-title">Playground</h2>
+  <p class="section-desc">A full-featured JavaScript playground. Write, run, and experiment freely. Use the snippet selector to load examples.</p>
+  <div class="pg-full">
+    <div class="pg-full-top">
+      <select id="pg-main-snippet" onchange="loadMainSnippet()">
+        <option value="hello">Hello World</option>
+        <option value="variables">Variables</option>
+        <option value="arrows">Arrow Functions</option>
+        <option value="arrays">Array Methods</option>
+        <option value="objects">Objects</option>
+        <option value="async">Async/Await</option>
+        <option value="classes">Classes</option>
+      </select>
+      <button class="btn-run" onclick="runMain()">▶ Run</button>
+      <button class="btn-clear" onclick="clearMain()">Clear Output</button>
+    </div>
+    <div class="pg-full-body">
+      <div id="pg-main-editor-wrap">
+        <div id="pg-main-line-nums"></div>
+        <textarea id="pg-main-editor" onkeydown="mainKeydown(event)" oninput="updateMainLineNums()">console.log('Hello, World!');</textarea>
+      </div>
+      <div id="pg-main-output"></div>
+    </div>
+  </div>
+</section>
+
+</div><!-- end #main -->
+
+<!-- FLOATING PLAYGROUND -->
+<button id="float-pg-btn" onclick="floatPgToggle()" title="Open Playground">⟨/⟩</button>
+<div id="float-pg-panel">
+  <div id="float-pg-titlebar">
+    <span>⟨/⟩ Playground</span>
+    <div class="float-pg-controls">
+      <select id="float-pg-snippet" onchange="loadFloatSnippet()">
+        <option value="hello">Hello World</option>
+        <option value="variables">Variables</option>
+        <option value="arrows">Arrow Functions</option>
+        <option value="arrays">Array Methods</option>
+        <option value="objects">Objects</option>
+        <option value="async">Async/Await</option>
+        <option value="classes">Classes</option>
+      </select>
+      <button onclick="floatPgRun()">▶ Run</button>
+      <button onclick="floatPgFullscreen()" id="float-pg-fs-btn" title="Fullscreen">⛶</button>
+      <button onclick="floatPgToggle()" title="Close">✕</button>
+    </div>
+  </div>
+  <div id="float-pg-body">
+    <div id="float-pg-editor-wrap">
+      <div id="float-pg-line-nums"></div>
+      <textarea id="float-pg-editor" onkeydown="floatKeydown(event)" oninput="updateFloatLineNums()">console.log('Hello, World!');</textarea>
+    </div>
+    <div id="float-pg-vdivider"></div>
+    <div id="float-pg-output-wrap">
+      <div id="float-pg-output"></div>
+    </div>
+  </div>
+  <div id="float-pg-resize-handle"></div>
+</div>
+
+<script>
+// ─── SNIPPETS ──────────────────────────────────────────────────────────────
+const SNIPPETS = {
+  hello: `console.log('Hello, World!');
+console.log('Welcome to the JS Bootcamp!');`,
+
+  variables: `// var / let / const
+const PI = 3.14159;
+let radius = 5;
+
+const area = PI * radius ** 2;
+console.log('Area:', area);
+
+// Block scoping
+{
+  let blockOnly = 'inside block';
+  console.log(blockOnly);
+}
+// console.log(blockOnly); // ReferenceError`,
+
+  arrows: `// Arrow functions
+const add = (a, b) => a + b;
+const square = n => n ** 2;
+const greet = name => \`Hello, \${name}!\`;
+
+console.log(add(3, 7));
+console.log(square(8));
+console.log(greet('Bootcamp'));
+
+// With array methods
+const nums = [1,2,3,4,5,6,7,8,9,10];
+const result = nums
+  .filter(n => n % 2 === 0)
+  .map(n => n ** 2);
+console.log(result);`,
+
+  arrays: `// Array methods
+const products = [
+  { name: 'Laptop', price: 999, inStock: true },
+  { name: 'Phone', price: 599, inStock: false },
+  { name: 'Tablet', price: 399, inStock: true },
+  { name: 'Watch', price: 199, inStock: true }
+];
+
+const available = products
+  .filter(p => p.inStock)
+  .map(p => p.name);
+console.log('Available:', available);
+
+const total = products
+  .filter(p => p.inStock)
+  .reduce((sum, p) => sum + p.price, 0);
+console.log('Total in-stock value: $' + total);
+
+const cheapest = products.reduce((min, p) =>
+  p.price < min.price ? p : min
+);
+console.log('Cheapest:', cheapest.name, '$' + cheapest.price);`,
+
+  objects: `// Object destructuring & spread
+const config = {
+  host: 'localhost',
+  port: 3000,
+  debug: false,
+  db: { name: 'mydb', user: 'admin' }
+};
+
+const { host, port, db: { name: dbName } } = config;
+console.log(\`Server: \${host}:\${port}\`);
+console.log('DB:', dbName);
+
+// Spread to override
+const prodConfig = {
+  ...config,
+  host: 'production.server.com',
+  port: 443,
+  debug: false
+};
+console.log(prodConfig.host, prodConfig.port);
+
+// Object.entries
+Object.entries({ a: 1, b: 2, c: 3 }).forEach(([k, v]) => {
+  console.log(k, '=>', v);
+});`,
+
+  async: `// Async/Await with simulated delay
+function delay(ms, value) {
+  return new Promise(resolve =>
+    setTimeout(() => resolve(value), ms)
+  );
+}
+
+async function fetchUserData(userId) {
+  console.log('Fetching user', userId, '...');
+  const user = await delay(100, { id: userId, name: 'Alice', role: 'admin' });
+  console.log('Got user:', user.name);
+
+  const perms = await delay(50, ['read', 'write', 'delete']);
+  console.log('Permissions:', perms.join(', '));
+
+  return { ...user, permissions: perms };
+}
+
+async function main() {
+  try {
+    const result = await fetchUserData(1);
+    console.log('Final result:', JSON.stringify(result));
+  } catch (err) {
+    console.error('Error:', err.message);
+  }
+}
+main();`,
+
+  classes: `// Classes: Animal → Dog
+class Animal {
+  #sound;
+  constructor(name, sound) {
+    this.name = name;
+    this.#sound = sound;
+  }
+  speak() {
+    return \`\${this.name} says \${this.#sound}!\`;
+  }
+  toString() { return \`Animal(\${this.name})\`; }
+}
+
+class Dog extends Animal {
+  #tricks = [];
+  constructor(name) { super(name, 'woof'); }
+
+  learn(trick) {
+    this.#tricks.push(trick);
+    return this; // for chaining
+  }
+  perform() {
+    if (!this.#tricks.length) return \`\${this.name} knows no tricks\`;
+    return \`\${this.name} performs: \${this.#tricks.join(', ')}\`;
+  }
+}
+
+const rex = new Dog('Rex');
+console.log(rex.speak());
+rex.learn('sit').learn('shake').learn('roll over');
+console.log(rex.perform());
+console.log(rex instanceof Dog, rex instanceof Animal);`
+};
+
+// ─── UTILITY ───────────────────────────────────────────────────────────────
+function stringify(v) {
+  if (v === null) return 'null';
+  if (v === undefined) return 'undefined';
+  if (typeof v === 'object') {
+    try { return JSON.stringify(v, null, 2); } catch { return String(v); }
+  }
+  return String(v);
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function captureAndRun(code) {
+  const entries = [];
+  const origLog = console.log, origWarn = console.warn,
+        origErr = console.error, origInfo = console.info;
+  console.log = (...a) => entries.push({type:'log', msg: a.map(stringify).join(' ')});
+  console.warn = (...a) => entries.push({type:'warn', msg: a.map(stringify).join(' ')});
+  console.error = (...a) => entries.push({type:'error', msg: a.map(stringify).join(' ')});
+  console.info = (...a) => entries.push({type:'info', msg: a.map(stringify).join(' ')});
+  const t0 = performance.now();
+  let err = null, isSyntax = false;
+  try { new Function(code); } catch(e) { err = e; isSyntax = true; }
+  if (!isSyntax) { try { eval(code); } catch(e) { err = e; } }
+  const ms = (performance.now() - t0).toFixed(1);
+  console.log = origLog; console.warn = origWarn;
+  console.error = origErr; console.info = origInfo;
+  return { entries, err, ms, isSyntax };
+}
+
+function analyzeError(err, code) {
+  const type = err.constructor?.name || 'Error';
+  const message = err.message || String(err);
+  const lines = code.split('\n');
+  let lineNum = null;
+  const stackMatch = (err.stack || '').match(/<anonymous>:(\d+):/);
+  if (stackMatch) {
+    const raw = parseInt(stackMatch[1]) - 1;
+    lineNum = [raw, raw-1, raw-2].find(n => n >= 0 && n < lines.length) ?? 0;
+  }
+  const lineContent = lineNum !== null ? lines[lineNum] : null;
+  const lineContext = lineContent ? lineContent.trim() : null;
+  const HINTS = {
+    SyntaxError: {
+      'Unexpected end of input': 'You may be missing a closing bracket }, parenthesis ), or quote.',
+      'Unexpected token': "There's an unexpected character. Check for missing commas, operators, or brackets.",
+      'Missing )': 'A closing parenthesis ) is missing.',
+      'missing ;': 'JavaScript expected a semicolon here.',
+      default: 'Check your syntax — brackets, quotes, and commas must all match up.'
+    },
+    ReferenceError: {
+      'is not defined': "This variable hasn't been declared. Did you misspell it or forget to declare it with let/const?",
+      'Cannot access': "You're trying to use a variable before it's been initialized (temporal dead zone with let/const).",
+      default: "A variable or function you're referencing doesn't exist in this scope."
+    },
+    TypeError: {
+      'is not a function': "You're calling something that isn't a function. Check the variable name and type.",
+      'Cannot read propert': "You're accessing a property on null or undefined. Check that your object exists first.",
+      'is not iterable': "You're trying to iterate over something that isn't iterable.",
+      'Assignment to constant variable': "You declared this with const — it can't be reassigned. Use let instead.",
+      default: 'A value is the wrong type for the operation.'
+    },
+    RangeError: {
+      'Maximum call stack': 'Infinite recursion — a function is calling itself endlessly. Check your base case.',
+      'Invalid array length': "You're trying to create an array with an invalid length.",
+      default: 'A value is out of the allowed range.'
+    }
+  };
+  let hint = 'Check your code for errors.';
+  const typeHints = HINTS[type];
+  if (typeHints) {
+    const key = Object.keys(typeHints).find(k => k !== 'default' && message.includes(k));
+    hint = key ? typeHints[key] : typeHints.default;
+  }
+  return { type, message, lineNum, lineContent, lineContext, hint };
+}
+
+function renderErrorCard(err, code) {
+  const { type, message, lineNum, lineContext, hint } = analyzeError(err, code);
+  const lineHTML = lineContext
+    ? `<div class="pg-error-line"><span class="pg-error-linenum">L${(lineNum||0)+1}</span><code>${escHtml(lineContext)}</code></div>`
+    : '';
+  return `<div class="pg-error-card">
+    <div class="pg-error-header"><span class="pg-error-type-badge">${escHtml(type)}</span> <span class="pg-error-msg">${escHtml(message)}</span></div>
+    ${lineHTML}
+    <div class="pg-error-hint">💡 ${escHtml(hint)}</div>
+  </div>`;
+}
+
+let runCounter = 0;
+function renderOutput(outputEl, { entries, err, ms }, code) {
+  runCounter++;
+  const now = new Date().toLocaleTimeString();
+  let html = `<div class="pg-run-header">▶ Run #${runCounter} &nbsp;<span class="pg-run-time">${now} · ${ms}ms</span></div>`;
+  for (const e of entries) {
+    const cls = e.type === 'warn' ? 'pg-warn' : e.type === 'error' ? 'pg-err-line' : 'pg-log';
+    const icon = e.type === 'warn' ? '⚠' : e.type === 'error' ? '✖' : '›';
+    html += `<div class="${cls}">${icon} ${escHtml(e.msg)}</div>`;
+  }
+  if (err) {
+    html += renderErrorCard(err, code);
+  } else if (entries.length === 0) {
+    html += `<div class="pg-success">✓ Ran successfully (no output)</div>`;
+  }
+  outputEl.innerHTML = html;
+  outputEl.scrollTop = outputEl.scrollHeight;
+}
+
+// ─── LINE NUMBERS ───────────────────────────────────────────────────────────
+function getLineNums(text) {
+  const n = (text.match(/\n/g) || []).length + 1;
+  return Array.from({length: n}, (_, i) => i + 1).join('\n');
+}
+
+function updateLineNums(id) {
+  const ta = document.getElementById('ed-' + id);
+  const ln = document.getElementById('lnum-' + id);
+  if (!ta || !ln) return;
+  ln.textContent = getLineNums(ta.value);
+  ln.style.height = ta.scrollHeight + 'px';
+  ta.style.height = Math.max(120, ta.scrollHeight) + 'px';
+}
+
+function updateMainLineNums() {
+  const ta = document.getElementById('pg-main-editor');
+  const ln = document.getElementById('pg-main-line-nums');
+  if (!ta || !ln) return;
+  ln.textContent = getLineNums(ta.value);
+}
+
+function updateFloatLineNums() {
+  const ta = document.getElementById('float-pg-editor');
+  const ln = document.getElementById('float-pg-line-nums');
+  if (!ta || !ln) return;
+  ln.textContent = getLineNums(ta.value);
+}
+
+// ─── INLINE PLAYGROUNDS ────────────────────────────────────────────────────
+function toggleTryIt(btn) {
+  const body = btn.nextElementSibling;
+  const open = body.style.display !== 'none';
+  body.style.display = open ? 'none' : 'block';
+  btn.textContent = (open ? '▶' : '▼') + ' Try it yourself';
+  if (!open) {
+    // Init line nums after display
+    const ta = body.querySelector('textarea');
+    if (ta) {
+      const id = ta.id.replace('ed-', '');
+      setTimeout(() => updateLineNums(id), 0);
+    }
+  }
+}
+
+function inlineKeydown(e, id) {
+  if (e.key === 'Tab') {
+    e.preventDefault();
+    const ta = e.target;
+    const s = ta.selectionStart, end = ta.selectionEnd;
+    ta.value = ta.value.substring(0, s) + '  ' + ta.value.substring(end);
+    ta.selectionStart = ta.selectionEnd = s + 2;
+    updateLineNums(id);
+  }
+  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+    e.preventDefault();
+    runInline(id);
+  }
+}
+
+function runInline(id) {
+  const ta = document.getElementById('ed-' + id);
+  const out = document.getElementById('out-' + id);
+  if (!ta || !out) return;
+  const result = captureAndRun(ta.value);
+  renderOutput(out, result, ta.value);
+}
+
+// ─── MAIN PLAYGROUND ────────────────────────────────────────────────────────
+function mainKeydown(e) {
+  if (e.key === 'Tab') {
+    e.preventDefault();
+    const ta = e.target, s = ta.selectionStart, end = ta.selectionEnd;
+    ta.value = ta.value.substring(0, s) + '  ' + ta.value.substring(end);
+    ta.selectionStart = ta.selectionEnd = s + 2;
+    updateMainLineNums();
+  }
+  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+    e.preventDefault();
+    runMain();
+  }
+}
+
+function runMain() {
+  const ta = document.getElementById('pg-main-editor');
+  const out = document.getElementById('pg-main-output');
+  const result = captureAndRun(ta.value);
+  renderOutput(out, result, ta.value);
+}
+
+function clearMain() {
+  document.getElementById('pg-main-output').innerHTML = '';
+}
+
+function loadMainSnippet() {
+  const sel = document.getElementById('pg-main-snippet').value;
+  const ta = document.getElementById('pg-main-editor');
+  ta.value = SNIPPETS[sel] || '';
+  updateMainLineNums();
+  document.getElementById('pg-main-output').innerHTML = '';
+}
+
+// ─── FLOATING PLAYGROUND ────────────────────────────────────────────────────
+let floatOpen = false;
+let isFullscreen = false;
+
+function floatPgToggle() {
+  floatOpen = !floatOpen;
+  const panel = document.getElementById('float-pg-panel');
+  panel.style.display = floatOpen ? 'flex' : 'none';
+  if (floatOpen) {
+    updateFloatLineNums();
+    document.getElementById('float-pg-editor').focus();
+  }
+}
+
+function floatPgRun() {
+  const ta = document.getElementById('float-pg-editor');
+  const out = document.getElementById('float-pg-output');
+  const result = captureAndRun(ta.value);
+  renderOutput(out, result, ta.value);
+}
+
+function floatPgFullscreen() {
+  const panel = document.getElementById('float-pg-panel');
+  isFullscreen = !isFullscreen;
+  panel.classList.toggle('fullscreen', isFullscreen);
+  document.getElementById('float-pg-fs-btn').textContent = isFullscreen ? '⊡' : '⛶';
+}
+
+function floatKeydown(e) {
+  if (e.key === 'Tab') {
+    e.preventDefault();
+    const ta = e.target, s = ta.selectionStart, end = ta.selectionEnd;
+    ta.value = ta.value.substring(0, s) + '  ' + ta.value.substring(end);
+    ta.selectionStart = ta.selectionEnd = s + 2;
+    updateFloatLineNums();
+  }
+  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+    e.preventDefault();
+    floatPgRun();
+  }
+  if (e.key === 'F11') {
+    e.preventDefault();
+    floatPgFullscreen();
+  }
+  if (e.key === 'Escape' && isFullscreen) {
+    floatPgFullscreen();
+  }
+}
+
+function loadFloatSnippet() {
+  const sel = document.getElementById('float-pg-snippet').value;
+  const ta = document.getElementById('float-pg-editor');
+  ta.value = SNIPPETS[sel] || '';
+  updateFloatLineNums();
+  document.getElementById('float-pg-output').innerHTML = '';
+}
+
+// Draggable titlebar
+(function() {
+  const panel = document.getElementById('float-pg-panel');
+  const titlebar = document.getElementById('float-pg-titlebar');
+  let dragging = false, ox = 0, oy = 0;
+  titlebar.addEventListener('mousedown', e => {
+    if (isFullscreen) return;
+    dragging = true;
+    const rect = panel.getBoundingClientRect();
+    ox = e.clientX - rect.left;
+    oy = e.clientY - rect.top;
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    const x = Math.max(0, Math.min(e.clientX - ox, window.innerWidth - panel.offsetWidth));
+    const y = Math.max(0, Math.min(e.clientY - oy, window.innerHeight - panel.offsetHeight));
+    panel.style.right = 'unset';
+    panel.style.bottom = 'unset';
+    panel.style.left = x + 'px';
+    panel.style.top = y + 'px';
+  });
+  document.addEventListener('mouseup', () => { dragging = false; });
+})();
+
+// Resizable handle
+(function() {
+  const panel = document.getElementById('float-pg-panel');
+  const handle = document.getElementById('float-pg-resize-handle');
+  let resizing = false, startX, startY, startW, startH;
+  handle.addEventListener('mousedown', e => {
+    if (isFullscreen) return;
+    resizing = true;
+    startX = e.clientX; startY = e.clientY;
+    startW = panel.offsetWidth; startH = panel.offsetHeight;
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e => {
+    if (!resizing) return;
+    const w = Math.max(400, startW + (e.clientX - startX));
+    const h = Math.max(300, startH + (e.clientY - startY));
+    panel.style.width = w + 'px';
+    panel.style.height = h + 'px';
+  });
+  document.addEventListener('mouseup', () => { resizing = false; });
+})();
+
+// Vertical divider drag (editor/output resize)
+(function() {
+  const divider = document.getElementById('float-pg-vdivider');
+  const editorWrap = document.getElementById('float-pg-editor-wrap');
+  const outputWrap = document.getElementById('float-pg-output-wrap');
+  let dragging = false, startX, startEW, startOW;
+  divider.addEventListener('mousedown', e => {
+    dragging = true;
+    startX = e.clientX;
+    startEW = editorWrap.offsetWidth;
+    startOW = outputWrap.offsetWidth;
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    const dx = e.clientX - startX;
+    const newEW = Math.max(200, startEW + dx);
+    const newOW = Math.max(150, startOW - dx);
+    editorWrap.style.flex = 'none';
+    editorWrap.style.width = newEW + 'px';
+    outputWrap.style.width = newOW + 'px';
+  });
+  document.addEventListener('mouseup', () => { dragging = false; });
+})();
+
+// ─── NAVIGATION & PROGRESS ──────────────────────────────────────────────────
+const visited = new Set(['intro']);
+const totalModules = 14;
+const sectionIds = [
+  'intro','whatisjs','variables','datatypes','strings',
+  'arrays','objects','comparison','control','loops',
+  'arrows','spread','es6','async','playground'
+];
+
+function updateProgress() {
+  const count = Math.min(visited.size - 1, totalModules); // exclude intro
+  const pct = Math.round(count / totalModules * 100);
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('progress-pct').textContent = pct + '%';
+}
+
+function goTo(id, btn) {
+  // Scroll section into view
+  const sec = document.getElementById('section-' + id);
+  if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  // Update active nav
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  // Track visited
+  if (id !== 'intro') {
+    visited.add(id);
+    if (btn) btn.classList.add('visited');
+    updateProgress();
+  }
+}
+
+// Highlight nav on scroll
+const main = document.getElementById('main');
+let scrollTimer;
+main.addEventListener('scroll', () => {
+  clearTimeout(scrollTimer);
+  scrollTimer = setTimeout(() => {
+    const scrollTop = main.scrollTop;
+    for (let i = sectionIds.length - 1; i >= 0; i--) {
+      const sec = document.getElementById('section-' + sectionIds[i]);
+      if (sec && sec.offsetTop <= scrollTop + 100) {
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        const navBtns = document.querySelectorAll('.nav-item');
+        navBtns.forEach(btn => {
+          const onclick = btn.getAttribute('onclick') || '';
+          if (onclick.includes("'" + sectionIds[i] + "'")) {
+            btn.classList.add('active');
+            if (sectionIds[i] !== 'intro') {
+              visited.add(sectionIds[i]);
+              btn.classList.add('visited');
+            }
+          }
+        });
+        updateProgress();
+        break;
+      }
+    }
+  }, 80);
+});
+
+// ─── INIT ───────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  // Init main playground line nums
+  updateMainLineNums();
+  updateFloatLineNums();
+
+  // Init inline line nums for any visible editors
+  document.querySelectorAll('.inline-editor').forEach(ta => {
+    const id = ta.id.replace('ed-', '');
+    updateLineNums(id);
+  });
+
+  // Sync textarea scroll with line numbers
+  document.querySelectorAll('.inline-editor').forEach(ta => {
+    ta.addEventListener('scroll', function() {
+      const id = this.id.replace('ed-', '');
+      const ln = document.getElementById('lnum-' + id);
+      if (ln) ln.scrollTop = this.scrollTop;
+    });
+  });
+
+  const mainTa = document.getElementById('pg-main-editor');
+  const mainLn = document.getElementById('pg-main-line-nums');
+  if (mainTa && mainLn) {
+    mainTa.addEventListener('scroll', function() {
+      mainLn.scrollTop = this.scrollTop;
+    });
+  }
+
+  const floatTa = document.getElementById('float-pg-editor');
+  const floatLn = document.getElementById('float-pg-line-nums');
+  if (floatTa && floatLn) {
+    floatTa.addEventListener('scroll', function() {
+      floatLn.scrollTop = this.scrollTop;
+    });
+  }
+
+  // Global keyboard shortcut
+  document.addEventListener('keydown', e => {
+    if (e.key === 'F11' && floatOpen) {
+      e.preventDefault();
+      floatPgFullscreen();
+    }
+    if (e.key === 'Escape' && isFullscreen) {
+      floatPgFullscreen();
+    }
+  });
+
+  updateProgress();
+});
+</script>
+</body>
+</html>
