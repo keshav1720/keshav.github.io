@@ -46,6 +46,42 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 #progress-label{font-size:11px;color:var(--text-muted);margin-bottom:6px;display:flex;justify-content:space-between;}
 #progress-bar-bg{height:4px;background:var(--surface2);border-radius:2px;overflow:hidden;}
 #progress-bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent3));border-radius:2px;transition:width .4s ease;width:0%;}
+/* Hero authors */
+.hero-authors{display:flex;align-items:center;gap:10px;margin-top:28px;opacity:.8;}
+.hero-authors-by{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);}
+.hero-author{font-size:15px;font-weight:700;color:var(--accent);letter-spacing:.5px;}
+.hero-authors-amp{font-size:13px;color:var(--text-muted);}
+
+/* Thank you section */
+#section-thankyou{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:64px 56px;}
+.ty-bg{position:absolute;inset:0;pointer-events:none;}
+.ty-glow{position:absolute;border-radius:50%;filter:blur(80px);opacity:.18;}
+.ty-glow-1{width:500px;height:500px;background:var(--accent);top:-120px;right:-100px;}
+.ty-glow-2{width:400px;height:400px;background:var(--accent3);bottom:-80px;left:-80px;}
+.ty-content{position:relative;z-index:1;max-width:680px;width:100%;text-align:center;}
+.ty-badge{display:inline-block;padding:6px 18px;background:rgba(232,184,75,.12);border:1px solid rgba(232,184,75,.3);border-radius:20px;font-size:13px;color:var(--accent);font-weight:600;margin-bottom:24px;letter-spacing:.5px;}
+.ty-title{font-size:48px;font-weight:800;line-height:1.1;margin-bottom:16px;}
+.ty-title span{background:linear-gradient(90deg,var(--accent),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.ty-sub{font-size:16px;color:var(--text-muted);line-height:1.7;max-width:520px;margin:0 auto 36px;}
+.ty-quote{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px 28px;font-size:15px;color:var(--text-muted);line-height:1.7;font-style:italic;margin-bottom:40px;position:relative;}
+.ty-quote-mark{font-size:48px;line-height:1;color:var(--accent);opacity:.4;position:absolute;top:8px;left:16px;font-style:normal;}
+.ty-quote-author{display:block;margin-top:10px;font-size:12px;font-style:normal;letter-spacing:1px;color:var(--accent3);font-weight:600;}
+.ty-contact-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);font-weight:600;margin-bottom:16px;}
+.ty-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:48px;}
+.ty-card{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;text-decoration:none;color:inherit;transition:all .2s;text-align:left;}
+.ty-card:hover{border-color:var(--accent);background:rgba(232,184,75,.06);transform:translateY(-2px);}
+.ty-card:hover .ty-card-arrow{color:var(--accent);transform:translateX(3px);}
+.ty-card-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent3));display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:var(--bg);flex-shrink:0;}
+.ty-card-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px;}
+.ty-card-role{font-size:11px;color:var(--text-muted);margin-bottom:4px;}
+.ty-card-email{font-size:12px;color:var(--accent3);}
+.ty-card-arrow{margin-left:auto;font-size:18px;color:var(--border);transition:all .2s;flex-shrink:0;}
+.ty-spoon-logo{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.ty-spoon-year{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);}
+
+#fullscreen-btn{display:flex;align-items:center;gap:7px;margin-top:12px;width:100%;padding:7px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text-muted);font-size:12px;cursor:pointer;transition:all .18s;}
+#fullscreen-btn:hover{background:rgba(232,184,75,.1);border-color:var(--accent);color:var(--accent);}
+#fullscreen-btn svg{flex-shrink:0;}
 
 /* MAIN */
 #main{flex:1;overflow-y:auto;height:100vh;}
@@ -204,6 +240,52 @@ ul{list-style:none;padding:0;}
 ul li{font-size:14px;color:var(--text-muted);padding:4px 0 4px 18px;position:relative;line-height:1.6;}
 ul li::before{content:"›";position:absolute;left:0;color:var(--accent);font-weight:700;}
 code{font-family:'Cascadia Code','Fira Code',monospace;background:var(--code-bg);border:1px solid var(--border);padding:1px 6px;border-radius:4px;font-size:12.5px;color:var(--accent3);}
+
+/* ── Async Animation ── */
+#async-viz { margin: 24px 0 32px; }
+.anim-stage { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+.anim-col { background: var(--surface); border-radius: 10px; overflow: hidden; min-height: 160px; }
+.anim-col-header { padding: 9px 14px; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }
+.anim-col-cs .anim-col-header { background: rgba(196,69,112,.15); color: #f090b0; border-bottom: 1px solid rgba(196,69,112,.3); }
+.anim-col-wa .anim-col-header { background: rgba(109,212,220,.1); color: var(--accent3); border-bottom: 1px solid rgba(109,212,220,.25); }
+.anim-col-mq .anim-col-header { background: rgba(232,184,75,.1); color: var(--accent); border-bottom: 1px solid rgba(232,184,75,.25); }
+.anim-col-body { padding: 12px; display: flex; flex-direction: column; gap: 6px; min-height: 120px; }
+.anim-frame { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 7px 11px; font-size: 12px; font-family: monospace; color: var(--text); opacity: 0; transform: translateY(8px); transition: opacity .35s, transform .35s, background .35s, border-color .35s; }
+.anim-frame.visible { opacity: 1; transform: translateY(0); }
+.anim-frame.frame-active { background: rgba(232,184,75,.15); border-color: var(--accent); color: var(--accent); }
+.anim-frame.frame-done { background: rgba(109,212,220,.08); border-color: rgba(109,212,220,.4); color: var(--accent3); }
+.anim-frame.frame-waiting { background: rgba(196,69,112,.08); border-color: rgba(196,69,112,.3); color: #f090b0; }
+.anim-event-loop { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 10px; margin-bottom: 10px; }
+.anim-el-ring { width: 28px; height: 28px; border-radius: 50%; border: 2.5px solid var(--border); border-top-color: var(--accent); transition: border-color .4s; }
+.anim-el-ring.spinning { animation: elSpin .7s linear infinite; border-top-color: var(--accent); border-color: rgba(232,184,75,.3); }
+@keyframes elSpin { to { transform: rotate(360deg); } }
+.anim-el-label { font-size: 12px; color: var(--text-muted); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+.anim-step-desc { text-align: center; font-size: 13px; color: var(--text-muted); min-height: 20px; transition: opacity .3s; padding: 4px 0 12px; }
+.anim-step-desc span { color: var(--text); }
+.anim-controls { display: flex; gap: 10px; justify-content: center; margin-top: 4px; }
+.anim-btn { padding: 8px 22px; border-radius: 7px; border: 1px solid var(--border); background: var(--surface2); color: var(--text); font-size: 13px; cursor: pointer; transition: all .18s; }
+.anim-btn:hover { border-color: var(--accent); color: var(--accent); }
+.anim-btn.primary { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: 700; }
+.anim-btn.primary:hover { opacity: .9; }
+.anim-step-dots { display: flex; gap: 6px; justify-content: center; margin-bottom: 10px; }
+.anim-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); transition: background .3s, border-color .3s; }
+.anim-dot.done { background: var(--accent3); border-color: var(--accent3); }
+.anim-dot.active { background: var(--accent); border-color: var(--accent); }
+
+/* ── Live API Demo ── */
+.api-demo-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 18px 0; }
+.api-demo-toolbar { padding: 10px 14px; background: var(--surface2); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.api-demo-toolbar label { font-size: 12px; color: var(--text-muted); }
+.api-demo-toolbar select { background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 5px 10px; border-radius: 6px; font-size: 12.5px; }
+.api-fetch-btn { padding: 6px 16px; background: var(--accent); color: var(--bg); border: none; border-radius: 6px; font-size: 12.5px; font-weight: 700; cursor: pointer; transition: opacity .18s; }
+.api-fetch-btn:hover { opacity: .85; }
+.api-fetch-btn:disabled { opacity: .5; cursor: not-allowed; }
+.api-demo-output { padding: 14px 16px; min-height: 60px; }
+.api-loading { display: flex; align-items: center; gap: 10px; color: var(--text-muted); font-size: 13px; }
+.api-spinner { width: 16px; height: 16px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: elSpin .7s linear infinite; }
+.api-result pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; font-size: 12px; line-height: 1.65; overflow-x: auto; color: var(--string); }
+.api-result-meta { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; display: flex; gap: 16px; }
+.api-result-meta span { color: var(--accent3); font-weight: 600; }
 </style>
 </head>
 <body>
@@ -235,10 +317,20 @@ code{font-family:'Cascadia Code','Fira Code',monospace;background:var(--code-bg)
     <button class="nav-item" onclick="goTo('es6',this)"><span class="nav-num">12</span> ES6+ Features</button>
     <button class="nav-item" onclick="goTo('async',this)"><span class="nav-num">13</span> Promises &amp; Async</button>
     <button class="nav-item" onclick="goTo('playground',this)"><span class="nav-num">⟨/⟩</span> Playground</button>
+    <button class="nav-item" onclick="goTo('thankyou',this)"><span class="nav-num">🎉</span> Thank You</button>
   </div>
   <div id="sidebar-footer">
     <div id="progress-label"><span>Progress</span><span id="progress-pct">0%</span></div>
     <div id="progress-bar-bg"><div id="progress-bar"></div></div>
+    <button id="fullscreen-btn" onclick="toggleAppFullscreen()" title="Toggle fullscreen (F11)">
+      <svg id="fs-icon-expand" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1 5V1H5M9 1H13V5M13 9V13H9M5 13H1V9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <svg id="fs-icon-shrink" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
+        <path d="M5 1V5H1M13 5H9V1M9 13V9H13M1 9H5V13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span id="fs-label">Fullscreen</span>
+    </button>
   </div>
 </nav>
 
@@ -247,7 +339,7 @@ code{font-family:'Cascadia Code','Fira Code',monospace;background:var(--code-bg)
 
 <!-- INTRO -->
 <section class="section" id="section-intro">
-  <div class="hero-eyebrow">Spoon Consulting · Annual IT Bootcamp</div>
+  <div class="hero-eyebrow">Spoon Consulting · Newbies 2026 JS Bootcamp</div>
   <h1 class="hero-title">Learn <span>JavaScript</span><br>from Scratch</h1>
   <p class="hero-sub">A hands-on guide to modern JavaScript — from variables to async/await. Each module has live code examples you can edit and run right here.</p>
   <div class="hero-chips">
@@ -256,6 +348,12 @@ code{font-family:'Cascadia Code','Fira Code',monospace;background:var(--code-bg)
     <span class="chip">ES6+ Coverage</span>
     <span class="chip">Error Explanations</span>
     <span class="chip">No Setup Needed</span>
+  </div>
+  <div class="hero-authors">
+    <span class="hero-authors-by">crafted by</span>
+    <span class="hero-author">Ashita</span>
+    <span class="hero-authors-amp">&amp;</span>
+    <span class="hero-author">Keshav</span>
   </div>
 </section>
 
@@ -1164,7 +1262,46 @@ console.log(c instanceof Shape, c instanceof Circle);</textarea>
 <section class="section" id="section-async">
   <div class="section-eyebrow">Module 13</div>
   <h2 class="section-title">Promises &amp; Async/Await</h2>
-  <p class="section-desc">JavaScript is single-threaded. Promises and async/await let you handle asynchronous operations without blocking the main thread.</p>
+  <p class="section-desc">JavaScript is single-threaded — it can only do one thing at a time. Promises and async/await let it kick off work in the background and pick up the result later, without freezing the page.</p>
+
+  <h3>How Async JavaScript Works</h3>
+  <p class="section-desc" style="margin-bottom:16px">When you <code style="background:var(--code-bg);padding:2px 6px;border-radius:4px;font-size:13px">await fetch()</code> a network request, JavaScript doesn't sit and wait. It hands the request to the browser, frees the call stack, and resumes when the response is ready.</p>
+
+  <div id="async-viz">
+    <div class="anim-stage">
+      <div class="anim-col anim-col-cs">
+        <div class="anim-col-header">📋 Call Stack</div>
+        <div class="anim-col-body" id="anim-cs-body"></div>
+      </div>
+      <div class="anim-col anim-col-wa">
+        <div class="anim-col-header">🌐 Web APIs</div>
+        <div class="anim-col-body" id="anim-wa-body"></div>
+      </div>
+      <div class="anim-col anim-col-mq">
+        <div class="anim-col-header">⚡ Microtask Queue</div>
+        <div class="anim-col-body" id="anim-mq-body"></div>
+      </div>
+    </div>
+    <div class="anim-event-loop">
+      <div class="anim-el-ring" id="anim-el-ring"></div>
+      <span class="anim-el-label">Event Loop</span>
+    </div>
+    <div class="anim-step-dots">
+      <div class="anim-dot"></div>
+      <div class="anim-dot"></div>
+      <div class="anim-dot"></div>
+      <div class="anim-dot"></div>
+      <div class="anim-dot"></div>
+      <div class="anim-dot"></div>
+      <div class="anim-dot"></div>
+    </div>
+    <p class="anim-step-desc" id="anim-step-desc">Press <strong>▶ Play</strong> to watch the animation</p>
+    <div class="anim-controls">
+      <button class="anim-btn primary" id="anim-play-btn" onclick="animPlay()">▶ Play</button>
+      <button class="anim-btn" onclick="animReset()">↺ Reset</button>
+    </div>
+  </div>
+
   <h3>Promises</h3>
   <div class="code-block">
     <div class="code-block-header"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="code-block-label">promise basics</span></div>
@@ -1193,15 +1330,17 @@ fetchUser(1)
   .catch(err => console.error("Error:", err.message))
   .finally(() => console.log("Done!"));</pre>
   </div>
+
   <h3>Async/Await</h3>
   <div class="compare-grid">
     <div class="compare-col">
       <div class="compare-col-header old">.then() chains</div>
       <pre>function loadData() {
-  fetch("/api/users")
+  fetch("https://jsonplaceholder
+        .typicode.com/posts/1")
     .then(res => res.json())
     .then(data => {
-      console.log(data);
+      console.log(data.title);
     })
     .catch(err => {
       console.error(err);
@@ -1212,47 +1351,90 @@ fetchUser(1)
       <div class="compare-col-header new">async/await</div>
       <pre>async function loadData() {
   try {
-    const res = await fetch("/api/users");
+    const res = await fetch(
+      "https://jsonplaceholder
+       .typicode.com/posts/1");
     const data = await res.json();
-    console.log(data);
+    console.log(data.title);
   } catch (err) {
     console.error(err);
   }
 }</pre>
     </div>
   </div>
+
+  <h3>Live API Demo</h3>
+  <p class="section-desc" style="margin-bottom:14px">Hit a real public REST API right from this page. Select an endpoint and click Fetch — watch the actual JSON response come back.</p>
+  <div class="code-block" style="margin-bottom:14px">
+    <div class="code-block-header"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="code-block-label">fetch pattern</span></div>
+    <pre>async function loadPost(id) {
+  const res = await fetch(
+    `https://jsonplaceholder.typicode.com/posts/${id}`
+  );
+  const data = await res.json();
+  return data;
+}
+
+loadPost(1).then(post => console.log(post.title));</pre>
+  </div>
+  <div class="api-demo-panel">
+    <div class="api-demo-toolbar">
+      <label for="api-endpoint-sel">Endpoint:</label>
+      <select id="api-endpoint-sel">
+        <option value="/posts/1">📄 /posts/1 — Blog post</option>
+        <option value="/users/1">👤 /users/1 — User profile</option>
+        <option value="/todos/1">✅ /todos/1 — To-do item</option>
+        <option value="/comments/1">💬 /comments/1 — Comment</option>
+        <option value="/albums/1">🖼 /albums/1 — Photo album</option>
+      </select>
+      <button class="api-fetch-btn" id="api-fetch-btn" onclick="runApiDemo()">▶ Fetch Live Data</button>
+    </div>
+    <div class="api-demo-output" id="api-demo-output">
+      <div style="color:var(--text-muted);font-size:13px;">Select an endpoint above and click Fetch to see a real API response.</div>
+    </div>
+  </div>
+
   <div class="try-it">
     <button class="try-it-toggle" onclick="toggleTryIt(this)">▶ Try it yourself</button>
     <div class="try-it-body" style="display:none">
       <div class="inline-pg">
         <div class="inline-pg-wrap">
           <div class="inline-line-nums" id="lnum-async"></div>
-          <textarea class="inline-editor" id="ed-async" onkeydown="inlineKeydown(event,'async')" oninput="updateLineNums('async')">// Simulated async with setTimeout
-function wait(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+          <textarea class="inline-editor" id="ed-async" onkeydown="inlineKeydown(event,'async')" oninput="updateLineNums('async')">// Simulated async (fetch() requires real browser context)
+// Use the Live API Demo above for real network calls
+
+function fakeApi(data, delayMs = 100) {
+  return new Promise(resolve => setTimeout(() => resolve(data), delayMs));
 }
 
-async function runSteps() {
-  console.log("Step 1: Starting...");
-  await wait(50);
-  console.log("Step 2: After 50ms delay");
-  await wait(50);
-  console.log("Step 3: Done!");
-  return "All steps completed";
+async function loadUserProfile(id) {
+  console.log(`Loading profile for user ${id}...`);
+
+  const user = await fakeApi({ id, name: 'Alice', role: 'developer' }, 80);
+  console.log('User:', JSON.stringify(user));
+
+  const posts = await fakeApi([
+    { title: 'Intro to JS' },
+    { title: 'Arrow Functions Deep Dive' }
+  ], 60);
+  console.log(`Posts (${posts.length}):`, posts.map(p => p.title).join(', '));
+
+  return { user, posts };
 }
 
-// Promise.all — run in parallel
-async function parallel() {
-  const results = await Promise.all([
-    Promise.resolve("A"),
-    Promise.resolve("B"),
-    Promise.resolve("C")
+// Promise.all — run requests in parallel
+async function loadDashboard() {
+  console.log('Loading dashboard in parallel...');
+  const [users, stats] = await Promise.all([
+    fakeApi(['Alice', 'Bob', 'Carol'], 100),
+    fakeApi({ visits: 1024, signups: 87 }, 90)
   ]);
-  console.log("Parallel results:", results);
+  console.log('Users:', users.join(', '));
+  console.log('Stats:', JSON.stringify(stats));
 }
 
-runSteps().then(msg => console.log(msg));
-parallel();</textarea>
+loadUserProfile(1).then(() => console.log('Profile loaded!'));
+loadDashboard();</textarea>
         </div>
         <button class="run-btn" onclick="runInline('async')">▶ Run (Ctrl+Enter)</button>
         <div class="inline-output" id="out-async"></div>
@@ -1286,6 +1468,58 @@ parallel();</textarea>
         <textarea id="pg-main-editor" onkeydown="mainKeydown(event)" oninput="updateMainLineNums()">console.log('Hello, World!');</textarea>
       </div>
       <div id="pg-main-output"></div>
+    </div>
+  </div>
+</section>
+
+<!-- THANK YOU -->
+<section class="section" id="section-thankyou">
+  <div class="ty-bg">
+    <div class="ty-glow ty-glow-1"></div>
+    <div class="ty-glow ty-glow-2"></div>
+  </div>
+  <div class="ty-content">
+    <div class="ty-badge">🎉 You made it!</div>
+    <h2 class="ty-title">Thank You for<br><span>Learning with Us</span></h2>
+    <p class="ty-sub">You've covered 14 modules of modern JavaScript — variables, closures, async/await, classes, and everything in between. Now go build something awesome.</p>
+
+    <div class="ty-quote">
+      <span class="ty-quote-mark">"</span>
+      Any fool can write code that a computer can understand.<br>
+      Good programmers write code that humans can understand.
+      <span class="ty-quote-author">— Martin Fowler</span>
+    </div>
+
+    <div class="ty-contact-label">Questions? Reach out to your instructors</div>
+    <div class="ty-cards">
+      <a class="ty-card" href="mailto:ashita.gopaul@spoonconsulting.com">
+        <div class="ty-card-avatar">A</div>
+        <div class="ty-card-info">
+          <div class="ty-card-name">Ashita Gopaul</div>
+          <div class="ty-card-role">Instructor · Spoon Consulting</div>
+          <div class="ty-card-email">ashita.gopaul@spoonconsulting.com</div>
+        </div>
+        <div class="ty-card-arrow">→</div>
+      </a>
+      <a class="ty-card" href="mailto:keshav.caleechurn@spoonconsulting.com">
+        <div class="ty-card-avatar">K</div>
+        <div class="ty-card-info">
+          <div class="ty-card-name">Keshav Caleechurn</div>
+          <div class="ty-card-role">Instructor · Spoon Consulting</div>
+          <div class="ty-card-email">keshav.caleechurn@spoonconsulting.com</div>
+        </div>
+        <div class="ty-card-arrow">→</div>
+      </a>
+    </div>
+
+    <div class="ty-spoon-logo">
+      <svg width="140" height="42" viewBox="0 0 186 56" xmlns="http://www.w3.org/2000/svg" opacity="0.35">
+        <circle cx="28" cy="28" r="27" fill="white"/>
+        <text x="5" y="39" font-family="'Segoe UI',system-ui,sans-serif" font-size="30" font-weight="300" fill="#0c1828" letter-spacing="-1">sp</text>
+        <text x="53" y="37" font-family="'Segoe UI',system-ui,sans-serif" font-size="30" font-weight="300" fill="white" letter-spacing="-1">oon</text>
+        <text x="54" y="52" font-family="'Segoe UI',system-ui,sans-serif" font-size="14" font-weight="300" fill="rgba(255,255,255,0.75)" letter-spacing="1">consulting</text>
+      </svg>
+      <span class="ty-spoon-year">Newbies 2026 JS Bootcamp</span>
     </div>
   </div>
 </section>
@@ -1819,7 +2053,7 @@ const totalModules = 14;
 const sectionIds = [
   'intro','whatisjs','variables','datatypes','strings',
   'arrays','objects','comparison','control','loops',
-  'arrows','spread','es6','async','playground'
+  'arrows','spread','es6','async','playground','thankyou'
 ];
 
 function updateProgress() {
@@ -1921,10 +2155,186 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Escape' && isFullscreen) {
       floatPgFullscreen();
     }
+    if (e.key === 'F11' && !floatOpen) {
+      e.preventDefault();
+      toggleAppFullscreen();
+    }
   });
+
+  // Sync fullscreen button icon when user presses Esc to exit native fullscreen
+  document.addEventListener('fullscreenchange', syncFsButton);
+  document.addEventListener('webkitfullscreenchange', syncFsButton);
 
   updateProgress();
 });
+
+/* ── App-level fullscreen (browser native) ── */
+function toggleAppFullscreen() {
+  const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+  if (!isFs) {
+    const el = document.documentElement;
+    if (el.requestFullscreen) el.requestFullscreen();
+    else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+  } else {
+    if (document.exitFullscreen) document.exitFullscreen();
+    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+  }
+}
+
+function syncFsButton() {
+  const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+  document.getElementById('fs-icon-expand').style.display = isFs ? 'none' : '';
+  document.getElementById('fs-icon-shrink').style.display = isFs ? '' : 'none';
+  document.getElementById('fs-label').textContent = isFs ? 'Exit Fullscreen' : 'Fullscreen';
+}
+
+/* ── Async Animation ── */
+const animSteps = [
+  {
+    desc: "JavaScript begins executing your code sequentially.",
+    cs: [{id:'f-main', text:'main()', cls:'frame-active'}],
+    wa: [], mq: [], el: false
+  },
+  {
+    desc: "<span>fetch('/posts/1')</span> is called — it returns a <span>Promise</span> immediately.",
+    cs: [{id:'f-main', text:'main()', cls:''}, {id:'f-fetch', text:"fetch('/posts/1')", cls:'frame-active'}],
+    wa: [], mq: [], el: false
+  },
+  {
+    desc: "Browser handles the HTTP request <span>in the background</span> — call stack is freed.",
+    cs: [{id:'f-main', text:'main()', cls:''}],
+    wa: [{id:'w-req', text:'GET /posts/1  ⏳', cls:'frame-waiting'}],
+    mq: [], el: false
+  },
+  {
+    desc: "<span>await</span> suspends the async function. Other code can run now.",
+    cs: [{id:'f-main', text:'main()', cls:''}, {id:'f-await', text:'await fetch(…)', cls:'frame-waiting'}],
+    wa: [{id:'w-req', text:'GET /posts/1  ⏳', cls:'frame-waiting'}],
+    mq: [], el: false
+  },
+  {
+    desc: "Response received! Promise <span>resolves</span> — callback queued as a microtask.",
+    cs: [{id:'f-main', text:'main()', cls:''}, {id:'f-await', text:'await fetch(…)', cls:'frame-waiting'}],
+    wa: [{id:'w-req', text:'GET /posts/1  ✓', cls:'frame-done'}],
+    mq: [{id:'q-cb', text:'.then(res => …)', cls:'frame-active'}],
+    el: true
+  },
+  {
+    desc: "Event loop picks up the microtask and resumes the suspended function.",
+    cs: [{id:'f-main', text:'main()', cls:''}, {id:'f-then', text:'.then(res => res.json())', cls:'frame-active'}],
+    wa: [],
+    mq: [],
+    el: true
+  },
+  {
+    desc: "<span>Data is available!</span> Your code continues as if it were synchronous.",
+    cs: [{id:'f-main', text:'main()', cls:''}, {id:'f-log', text:'console.log(data)  ✓', cls:'frame-done'}],
+    wa: [],
+    mq: [],
+    el: false
+  }
+];
+
+let animTimer = null, animStep = -1, animPlaying = false;
+
+function animRender(step) {
+  const s = animSteps[step];
+  const csBody = document.getElementById('anim-cs-body');
+  const waBody = document.getElementById('anim-wa-body');
+  const mqBody = document.getElementById('anim-mq-body');
+  const elRing = document.getElementById('anim-el-ring');
+  const desc = document.getElementById('anim-step-desc');
+
+  function renderFrames(body, frames) {
+    body.innerHTML = '';
+    frames.forEach(f => {
+      const d = document.createElement('div');
+      d.className = 'anim-frame';
+      if (f.cls) d.classList.add(...f.cls.split(' ').filter(Boolean));
+      d.textContent = f.text;
+      body.appendChild(d);
+      requestAnimationFrame(() => requestAnimationFrame(() => d.classList.add('visible')));
+    });
+  }
+
+  renderFrames(csBody, s.cs);
+  renderFrames(waBody, s.wa);
+  renderFrames(mqBody, s.mq);
+  elRing.classList.toggle('spinning', s.el);
+  desc.innerHTML = s.desc;
+
+  document.querySelectorAll('.anim-dot').forEach((dot, i) => {
+    dot.className = 'anim-dot' + (i < step ? ' done' : i === step ? ' active' : '');
+  });
+}
+
+function animPlay() {
+  if (animPlaying) return;
+  animPlaying = true;
+  document.getElementById('anim-play-btn').disabled = true;
+  if (animStep >= animSteps.length - 1) animStep = -1;
+
+  function nextStep() {
+    animStep++;
+    if (animStep >= animSteps.length) {
+      animPlaying = false;
+      document.getElementById('anim-play-btn').disabled = false;
+      document.getElementById('anim-play-btn').textContent = '↺ Replay';
+      return;
+    }
+    animRender(animStep);
+    animTimer = setTimeout(nextStep, 1500);
+  }
+  nextStep();
+}
+
+function animReset() {
+  clearTimeout(animTimer);
+  animPlaying = false;
+  animStep = -1;
+  document.getElementById('anim-cs-body').innerHTML = '';
+  document.getElementById('anim-wa-body').innerHTML = '';
+  document.getElementById('anim-mq-body').innerHTML = '';
+  document.getElementById('anim-el-ring').classList.remove('spinning');
+  document.getElementById('anim-step-desc').innerHTML = 'Press <strong>▶ Play</strong> to watch the animation';
+  document.getElementById('anim-play-btn').disabled = false;
+  document.getElementById('anim-play-btn').textContent = '▶ Play';
+  document.querySelectorAll('.anim-dot').forEach(d => d.className = 'anim-dot');
+}
+
+/* ── Live API Demo ── */
+async function runApiDemo() {
+  const sel = document.getElementById('api-endpoint-sel');
+  const path = sel.value;
+  const btn = document.getElementById('api-fetch-btn');
+  const output = document.getElementById('api-demo-output');
+  const url = 'https://jsonplaceholder.typicode.com' + path;
+
+  btn.disabled = true;
+  output.innerHTML = '<div class="api-loading"><div class="api-spinner"></div> Fetching ' + url + ' …</div>';
+
+  const t0 = performance.now();
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    const ms = (performance.now() - t0).toFixed(0);
+    output.innerHTML = `
+      <div class="api-result">
+        <div class="api-result-meta">
+          <span>✓ 200 OK</span>
+          <span>${ms}ms</span>
+          <span>${url}</span>
+        </div>
+        <pre>${JSON.stringify(data, null, 2)}</pre>
+      </div>`;
+  } catch (e) {
+    const ms = (performance.now() - t0).toFixed(0);
+    output.innerHTML = `<div class="pg-error-card"><div class="pg-error-header"><span class="pg-error-type-badge">NetworkError</span> <span class="pg-error-msg">${e.message}</span></div><div class="pg-error-hint">💡 Check your internet connection and try again.</div></div>`;
+  }
+  btn.disabled = false;
+}
+
 </script>
 </body>
 </html>
