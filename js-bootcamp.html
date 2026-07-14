@@ -188,11 +188,11 @@ span.op{color:var(--op);}
 .try-it-toggle:hover{background:var(--surface2);}
 .try-it-body{border-top:1px solid var(--border);}
 .inline-pg{padding:0;}
-.inline-pg-wrap{display:flex;background:var(--code-bg);position:relative;}
-.inline-line-nums{padding:14px 0 14px 10px;font-family:'Cascadia Code','Fira Code',monospace;font-size:13px;line-height:1.75;color:var(--comment);text-align:right;min-width:38px;user-select:none;background:var(--code-bg);}
-.inline-editor{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:'Cascadia Code','Fira Code','Courier New',monospace;font-size:13px;line-height:1.75;padding:14px 16px;resize:none;min-height:120px;tab-size:2;}
+.inline-pg-wrap{display:flex;flex-direction:column;background:var(--code-bg);position:relative;}
+
+.inline-editor{width:100%;box-sizing:border-box;background:transparent;border:none;outline:none;color:var(--text);font-family:'Cascadia Code','Fira Code','Courier New',monospace;font-size:13px;line-height:1.75;padding:14px 16px;resize:none;min-height:500px;height:500px;overflow-y:auto;tab-size:2;}
 .run-btn{display:block;width:100%;padding:10px;background:rgba(232,184,75,.1);border:none;border-top:1px solid var(--border);color:var(--accent);font-size:13px;font-weight:700;cursor:pointer;transition:background .15s;letter-spacing:.5px;}
-.run-btn:hover{background:rgba(232,184,75,.18);}
+.run-btn:hover{background:rgba(232,184,75,.18);}.inline-resize-handle{width:100%;height:10px;background:var(--surface2);border-top:1px solid var(--border);cursor:ns-resize;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s;}.inline-resize-handle:hover,.inline-resize-handle.dragging{background:rgba(232,184,75,.15);border-top-color:var(--accent);}.inline-resize-handle::after{content:'';width:36px;height:2px;border-radius:2px;background:var(--border);transition:background .15s;}.inline-resize-handle:hover::after,.inline-resize-handle.dragging::after{background:var(--accent);}
 .inline-output{padding:12px 16px;font-family:'Cascadia Code','Fira Code',monospace;font-size:12.5px;line-height:1.75;background:var(--bg);min-height:40px;max-height:200px;overflow-y:auto;border-top:1px solid var(--border);}
 .inline-output:empty{display:none;}
 
@@ -227,7 +227,7 @@ span.op{color:var(--op);}
 .float-pg-controls button:hover{background:var(--surface2);}
 #float-pg-body{flex:1;display:flex;overflow:hidden;}
 #float-pg-editor-wrap{flex:1;display:flex;background:var(--code-bg);overflow:hidden;}
-#float-pg-line-nums{padding:14px 4px 14px 10px;font-family:monospace;font-size:13px;line-height:1.75;color:var(--comment);min-width:36px;text-align:right;user-select:none;}
+
 #float-pg-editor{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:'Cascadia Code','Fira Code',monospace;font-size:13px;line-height:1.75;padding:14px 12px;resize:none;tab-size:2;}
 #float-pg-vdivider{width:4px;background:var(--border);cursor:col-resize;flex-shrink:0;}
 #float-pg-output-wrap{width:40%;background:var(--bg);overflow-y:auto;display:flex;flex-direction:column;}
@@ -245,7 +245,7 @@ span.op{color:var(--op);}
 .btn-clear:hover{background:var(--surface2);}
 #section-playground .pg-full-body{flex:1;display:flex;overflow:hidden;}
 #pg-main-editor-wrap{flex:1;display:flex;background:var(--code-bg);}
-#pg-main-line-nums{padding:14px 4px 14px 10px;font-family:monospace;font-size:13px;line-height:1.75;color:var(--comment);min-width:38px;text-align:right;user-select:none;}
+
 #pg-main-editor{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:'Cascadia Code','Fira Code',monospace;font-size:13px;line-height:1.75;padding:14px 12px;resize:none;tab-size:2;}
 #pg-main-output{width:40%;background:var(--bg);overflow-y:auto;padding:12px 14px;font-family:'Cascadia Code','Fira Code',monospace;font-size:12.5px;line-height:1.75;border-left:1px solid var(--border);}
 
@@ -399,8 +399,7 @@ code{font-family:'Cascadia Code','Fira Code',monospace;background:var(--code-bg)
     <div class="try-it-body" style="display:none">
       <div class="inline-pg">
         <div class="inline-pg-wrap">
-          <div class="inline-line-nums" id="lnum-whatisjs"></div>
-          <textarea class="inline-editor" id="ed-whatisjs" onkeydown="inlineKeydown(event,'whatisjs')" oninput="updateLineNums('whatisjs')">// JavaScript basics
+          <textarea class="inline-editor" id="ed-whatisjs" onkeydown="inlineKeydown(event,'whatisjs')">// JavaScript basics
 console.log("Hello, Bootcamp!");
 console.log(typeof 42);        // number
 console.log(typeof "hello");   // string
@@ -410,7 +409,7 @@ console.log(typeof null);      // object (quirk!)
 console.log(typeof {});        // object
 console.log(typeof []);        // object
 console.log(typeof function(){}); // function</textarea>
-        </div>
+          <div class="inline-resize-handle" onmousedown="startInlineResize(event)"></div>        </div>
         <button class="run-btn" onclick="runInline('whatisjs')">▶ Run (Ctrl+Enter)</button>
         <div class="inline-output" id="out-whatisjs"></div>
       </div>
@@ -472,8 +471,7 @@ for (let j = 1; j &lt;= 5; j++) {
     <div class="try-it-body" style="display:none">
       <div class="inline-pg">
         <div class="inline-pg-wrap">
-          <div class="inline-line-nums" id="lnum-variables"></div>
-          <textarea class="inline-editor" id="ed-variables" onkeydown="inlineKeydown(event,'variables')" oninput="updateLineNums('variables')">const name = "Alice";
+          <textarea class="inline-editor" id="ed-variables" onkeydown="inlineKeydown(event,'variables')">const name = "Alice";
 let age = 25;
 // const name = "Bob"; // Error: already declared
 age = 26; // OK — let can be reassigned
@@ -487,7 +485,7 @@ console.log(name, age);
   console.log(blockVar, blockConst);
 }
 // console.log(blockVar); // Would throw ReferenceError</textarea>
-        </div>
+          <div class="inline-resize-handle" onmousedown="startInlineResize(event)"></div>        </div>
         <button class="run-btn" onclick="runInline('variables')">▶ Run (Ctrl+Enter)</button>
         <div class="inline-output" id="out-variables"></div>
       </div>
@@ -535,8 +533,7 @@ console.log({} instanceof Object);  // true</pre>
     <div class="try-it-body" style="display:none">
       <div class="inline-pg">
         <div class="inline-pg-wrap">
-          <div class="inline-line-nums" id="lnum-datatypes"></div>
-          <textarea class="inline-editor" id="ed-datatypes" onkeydown="inlineKeydown(event,'datatypes')" oninput="updateLineNums('datatypes')">// Explore data types
+          <textarea class="inline-editor" id="ed-datatypes" onkeydown="inlineKeydown(event,'datatypes')">// Explore data types
 let x;
 console.log("x =", x, "| typeof:", typeof x); // undefined
 
@@ -551,7 +548,7 @@ const falsyValues = [false, 0, "", null, undefined, NaN];
 falsyValues.forEach(v => {
   console.log(JSON.stringify(v), "is falsy:", !v);
 });</textarea>
-        </div>
+          <div class="inline-resize-handle" onmousedown="startInlineResize(event)"></div>        </div>
         <button class="run-btn" onclick="runInline('datatypes')">▶ Run (Ctrl+Enter)</button>
         <div class="inline-output" id="out-datatypes"></div>
       </div>
@@ -601,8 +598,7 @@ console.log("  hello  ".trim());     // "hello"</pre>
     <div class="try-it-body" style="display:none">
       <div class="inline-pg">
         <div class="inline-pg-wrap">
-          <div class="inline-line-nums" id="lnum-strings"></div>
-          <textarea class="inline-editor" id="ed-strings" onkeydown="inlineKeydown(event,'strings')" oninput="updateLineNums('strings')">const firstName = "Ada";
+          <textarea class="inline-editor" id="ed-strings" onkeydown="inlineKeydown(event,'strings')">const firstName = "Ada";
 const lastName = "Lovelace";
 const year = 1815;
 
@@ -619,7 +615,7 @@ console.log("JS ".repeat(3).trim());    // "JS JS JS"
 // Destructuring a string
 const [first, second, ...rest] = "Hello";
 console.log(first, second, rest.join(""));</textarea>
-        </div>
+          <div class="inline-resize-handle" onmousedown="startInlineResize(event)"></div>        </div>
         <button class="run-btn" onclick="runInline('strings')">▶ Run (Ctrl+Enter)</button>
         <div class="inline-output" id="out-strings"></div>
       </div>
@@ -680,8 +676,7 @@ console.log(result); // 300</pre>
     <div class="try-it-body" style="display:none">
       <div class="inline-pg">
         <div class="inline-pg-wrap">
-          <div class="inline-line-nums" id="lnum-arrays"></div>
-          <textarea class="inline-editor" id="ed-arrays" onkeydown="inlineKeydown(event,'arrays')" oninput="updateLineNums('arrays')">const people = [
+          <textarea class="inline-editor" id="ed-arrays" onkeydown="inlineKeydown(event,'arrays')">const people = [
   { name: "Alice", age: 28 },
   { name: "Bob", age: 34 },
   { name: "Carol", age: 22 },
@@ -701,7 +696,7 @@ console.log("Average age:", avgAge);
 // Array.from
 const range = Array.from({ length: 5 }, (_, i) => i + 1);
 console.log(range); // [1,2,3,4,5]</textarea>
-        </div>
+          <div class="inline-resize-handle" onmousedown="startInlineResize(event)"></div>        </div>
         <button class="run-btn" onclick="runInline('arrays')">▶ Run (Ctrl+Enter)</button>
         <div class="inline-output" id="out-arrays"></div>
       </div>
@@ -771,8 +766,7 @@ const obj = {
     <div class="try-it-body" style="display:none">
       <div class="inline-pg">
         <div class="inline-pg-wrap">
-          <div class="inline-line-nums" id="lnum-objects"></div>
-          <textarea class="inline-editor" id="ed-objects" onkeydown="inlineKeydown(event,'objects')" oninput="updateLineNums('objects')">const employee = {
+          <textarea class="inline-editor" id="ed-objects" onkeydown="inlineKeydown(event,'objects')">const employee = {
   name: "Sam",
   role: "Developer",
   department: "Engineering",
@@ -792,7 +786,7 @@ console.log(Object.keys(employee));
 Object.entries(employee).forEach(([k, v]) => {
   if (typeof v === "string") console.log(`${k}: ${v}`);
 });</textarea>
-        </div>
+          <div class="inline-resize-handle" onmousedown="startInlineResize(event)"></div>        </div>
         <button class="run-btn" onclick="runInline('objects')">▶ Run (Ctrl+Enter)</button>
         <div class="inline-output" id="out-objects"></div>
       </div>
@@ -824,8 +818,7 @@ Object.entries(employee).forEach(([k, v]) => {
     <div class="try-it-body" style="display:none">
       <div class="inline-pg">
         <div class="inline-pg-wrap">
-          <div class="inline-line-nums" id="lnum-comparison"></div>
-          <textarea class="inline-editor" id="ed-comparison" onkeydown="inlineKeydown(event,'comparison')" oninput="updateLineNums('comparison')">// Test the equality operators
+          <textarea class="inline-editor" id="ed-comparison" onkeydown="inlineKeydown(event,'comparison')">// Test the equality operators
 console.log("== comparisons:");
 console.log(0 == false);   // true
 console.log("" == false);  // true
@@ -846,7 +839,7 @@ function process(value) {
 process(null);
 process(undefined);
 process(42);</textarea>
-        </div>
+          <div class="inline-resize-handle" onmousedown="startInlineResize(event)"></div>        </div>
         <button class="run-btn" onclick="runInline('comparison')">▶ Run (Ctrl+Enter)</button>
         <div class="inline-output" id="out-comparison"></div>
       </div>
@@ -896,8 +889,7 @@ console.log(type);</pre>
     <div class="try-it-body" style="display:none">
       <div class="inline-pg">
         <div class="inline-pg-wrap">
-          <div class="inline-line-nums" id="lnum-control"></div>
-          <textarea class="inline-editor" id="ed-control" onkeydown="inlineKeydown(event,'control')" oninput="updateLineNums('control')">// Grade classifier
+          <textarea class="inline-editor" id="ed-control" onkeydown="inlineKeydown(event,'control')">// Grade classifier
 function getGrade(score) {
   if (score >= 90) return "A";
   else if (score >= 80) return "B";
@@ -914,7 +906,7 @@ function getGrade(score) {
 const user = null;
 const displayName = user?.name ?? "Anonymous";
 console.log(displayName);</textarea>
-        </div>
+          <div class="inline-resize-handle" onmousedown="startInlineResize(event)"></div>        </div>
         <button class="run-btn" onclick="runInline('control')">▶ Run (Ctrl+Enter)</button>
         <div class="inline-output" id="out-control"></div>
       </div>
@@ -964,15 +956,14 @@ do {
     <div class="try-it-body" style="display:none">
       <div class="inline-pg">
         <div class="inline-pg-wrap">
-          <div class="inline-line-nums" id="lnum-loops"></div>
-          <textarea class="inline-editor" id="ed-loops" onkeydown="inlineKeydown(event,'loops')" oninput="updateLineNums('loops')">// FizzBuzz with a loop
+          <textarea class="inline-editor" id="ed-loops" onkeydown="inlineKeydown(event,'loops')">// FizzBuzz with a loop
 for (let i = 1; i <= 20; i++) {
   if (i % 15 === 0) console.log("FizzBuzz");
   else if (i % 3 === 0) console.log("Fizz");
   else if (i % 5 === 0) console.log("Buzz");
   else console.log(i);
 }</textarea>
-        </div>
+          <div class="inline-resize-handle" onmousedown="startInlineResize(event)"></div>        </div>
         <button class="run-btn" onclick="runInline('loops')">▶ Run (Ctrl+Enter)</button>
         <div class="inline-output" id="out-loops"></div>
       </div>
@@ -1038,8 +1029,7 @@ const makeUser = name => ({ name, createdAt: Date.now() });</pre>
     <div class="try-it-body" style="display:none">
       <div class="inline-pg">
         <div class="inline-pg-wrap">
-          <div class="inline-line-nums" id="lnum-arrows"></div>
-          <textarea class="inline-editor" id="ed-arrows" onkeydown="inlineKeydown(event,'arrows')" oninput="updateLineNums('arrows')">// Arrow function examples
+          <textarea class="inline-editor" id="ed-arrows" onkeydown="inlineKeydown(event,'arrows')">// Arrow function examples
 const multiply = (a, b) => a * b;
 const square = n => n ** 2;
 const isEven = n => n % 2 === 0;
@@ -1058,7 +1048,7 @@ const result = numbers
   .filter(n => n > 2)
   .map(n => n * 10);
 console.log(result);</textarea>
-        </div>
+          <div class="inline-resize-handle" onmousedown="startInlineResize(event)"></div>        </div>
         <button class="run-btn" onclick="runInline('arrows')">▶ Run (Ctrl+Enter)</button>
         <div class="inline-output" id="out-arrows"></div>
       </div>
@@ -1124,8 +1114,7 @@ console.log(doMath("product", 2, 3, 4));    // 24</pre>
     <div class="try-it-body" style="display:none">
       <div class="inline-pg">
         <div class="inline-pg-wrap">
-          <div class="inline-line-nums" id="lnum-spread"></div>
-          <textarea class="inline-editor" id="ed-spread" onkeydown="inlineKeydown(event,'spread')" oninput="updateLineNums('spread')">// Default args
+          <textarea class="inline-editor" id="ed-spread" onkeydown="inlineKeydown(event,'spread')">// Default args
 function createUser(name, role = "viewer", active = true) {
   return { name, role, active };
 }
@@ -1144,7 +1133,7 @@ function logAll(first, ...rest) {
   console.log("Rest:", rest);
 }
 logAll("a", "b", "c", "d");</textarea>
-        </div>
+          <div class="inline-resize-handle" onmousedown="startInlineResize(event)"></div>        </div>
         <button class="run-btn" onclick="runInline('spread')">▶ Run (Ctrl+Enter)</button>
         <div class="inline-output" id="out-spread"></div>
       </div>
@@ -1238,8 +1227,7 @@ console.log(rex.showTricks());</pre>
     <div class="try-it-body" style="display:none">
       <div class="inline-pg">
         <div class="inline-pg-wrap">
-          <div class="inline-line-nums" id="lnum-es6"></div>
-          <textarea class="inline-editor" id="ed-es6" onkeydown="inlineKeydown(event,'es6')" oninput="updateLineNums('es6')">class Shape {
+          <textarea class="inline-editor" id="ed-es6" onkeydown="inlineKeydown(event,'es6')">class Shape {
   constructor(color = "white") {
     this.color = color;
   }
@@ -1270,7 +1258,7 @@ const r = new Rectangle(4, 6, "red");
 console.log(c.describe());
 console.log(r.describe());
 console.log(c instanceof Shape, c instanceof Circle);</textarea>
-        </div>
+          <div class="inline-resize-handle" onmousedown="startInlineResize(event)"></div>        </div>
         <button class="run-btn" onclick="runInline('es6')">▶ Run (Ctrl+Enter)</button>
         <div class="inline-output" id="out-es6"></div>
       </div>
@@ -1418,8 +1406,7 @@ loadPost(1).then(post => console.log(post.title));</pre>
     <div class="try-it-body" style="display:none">
       <div class="inline-pg">
         <div class="inline-pg-wrap">
-          <div class="inline-line-nums" id="lnum-async"></div>
-          <textarea class="inline-editor" id="ed-async" onkeydown="inlineKeydown(event,'async')" oninput="updateLineNums('async')">// Simulated async (fetch() requires real browser context)
+          <textarea class="inline-editor" id="ed-async" onkeydown="inlineKeydown(event,'async')">// Simulated async (fetch() requires real browser context)
 // Use the Live API Demo above for real network calls
 
 function fakeApi(data, delayMs = 100) {
@@ -1454,7 +1441,7 @@ async function loadDashboard() {
 
 loadUserProfile(1).then(() => console.log('Profile loaded!'));
 loadDashboard();</textarea>
-        </div>
+          <div class="inline-resize-handle" onmousedown="startInlineResize(event)"></div>        </div>
         <button class="run-btn" onclick="runInline('async')">▶ Run (Ctrl+Enter)</button>
         <div class="inline-output" id="out-async"></div>
       </div>
@@ -1483,8 +1470,7 @@ loadDashboard();</textarea>
     </div>
     <div class="pg-full-body">
       <div id="pg-main-editor-wrap">
-        <div id="pg-main-line-nums"></div>
-        <textarea id="pg-main-editor" onkeydown="mainKeydown(event)" oninput="updateMainLineNums()">console.log('Hello, World!');</textarea>
+        <textarea id="pg-main-editor" onkeydown="mainKeydown(event)">console.log('Hello, World!');</textarea>
       </div>
       <div id="pg-main-output"></div>
     </div>
@@ -1571,8 +1557,7 @@ loadDashboard();</textarea>
   </div>
   <div id="float-pg-body">
     <div id="float-pg-editor-wrap">
-      <div id="float-pg-line-nums"></div>
-      <textarea id="float-pg-editor" onkeydown="floatKeydown(event)" oninput="updateFloatLineNums()">console.log('Hello, World!');</textarea>
+      <textarea id="float-pg-editor" onkeydown="floatKeydown(event)">console.log('Hello, World!');</textarea>
     </div>
     <div id="float-pg-vdivider"></div>
     <div id="float-pg-output-wrap">
@@ -1839,36 +1824,40 @@ function renderOutput(outputEl, { entries, err, ms }, code) {
   outputEl.scrollTop = outputEl.scrollHeight;
 }
 
-// ─── LINE NUMBERS ───────────────────────────────────────────────────────────
-function getLineNums(text) {
-  const n = (text.match(/\n/g) || []).length + 1;
-  return Array.from({length: n}, (_, i) => i + 1).join('\n');
-}
 
-function updateLineNums(id) {
-  const ta = document.getElementById('ed-' + id);
-  const ln = document.getElementById('lnum-' + id);
-  if (!ta || !ln) return;
-  ln.textContent = getLineNums(ta.value);
-  ln.style.height = ta.scrollHeight + 'px';
-  ta.style.height = Math.max(120, ta.scrollHeight) + 'px';
-}
 
-function updateMainLineNums() {
-  const ta = document.getElementById('pg-main-editor');
-  const ln = document.getElementById('pg-main-line-nums');
-  if (!ta || !ln) return;
-  ln.textContent = getLineNums(ta.value);
-}
 
-function updateFloatLineNums() {
-  const ta = document.getElementById('float-pg-editor');
-  const ln = document.getElementById('float-pg-line-nums');
-  if (!ta || !ln) return;
-  ln.textContent = getLineNums(ta.value);
-}
 
 // ─── INLINE PLAYGROUNDS ────────────────────────────────────────────────────
+
+/* ── Inline editor drag-to-resize ───────────────────────────────────────── */
+function startInlineResize(e) {
+  e.preventDefault();
+  const handle = e.currentTarget;
+  const wrap   = handle.parentElement;           // .inline-pg-wrap
+  const ta     = wrap.querySelector('textarea'); // .inline-editor
+  const startY = e.clientY;
+  const startH = ta.offsetHeight || 500;
+
+  handle.classList.add('dragging');
+  document.body.style.userSelect = 'none';
+  document.body.style.cursor = 'ns-resize';
+
+  function onMove(ev) {
+    const newH = Math.max(500, startH + (ev.clientY - startY));
+    ta.style.height = newH + 'px';
+  }
+  function onUp() {
+    handle.classList.remove('dragging');
+    document.body.style.userSelect = '';
+    document.body.style.cursor = '';
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onUp);
+  }
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('mouseup', onUp);
+}
+
 function toggleTryIt(btn) {
   const body = btn.nextElementSibling;
   const open = body.style.display !== 'none';
@@ -1879,7 +1868,6 @@ function toggleTryIt(btn) {
     const ta = body.querySelector('textarea');
     if (ta) {
       const id = ta.id.replace('ed-', '');
-      setTimeout(() => updateLineNums(id), 0);
     }
   }
 }
@@ -1891,7 +1879,6 @@ function inlineKeydown(e, id) {
     const s = ta.selectionStart, end = ta.selectionEnd;
     ta.value = ta.value.substring(0, s) + '  ' + ta.value.substring(end);
     ta.selectionStart = ta.selectionEnd = s + 2;
-    updateLineNums(id);
   }
   if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
     e.preventDefault();
@@ -1914,7 +1901,6 @@ function mainKeydown(e) {
     const ta = e.target, s = ta.selectionStart, end = ta.selectionEnd;
     ta.value = ta.value.substring(0, s) + '  ' + ta.value.substring(end);
     ta.selectionStart = ta.selectionEnd = s + 2;
-    updateMainLineNums();
   }
   if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
     e.preventDefault();
@@ -1937,7 +1923,6 @@ function loadMainSnippet() {
   const sel = document.getElementById('pg-main-snippet').value;
   const ta = document.getElementById('pg-main-editor');
   ta.value = SNIPPETS[sel] || '';
-  updateMainLineNums();
   document.getElementById('pg-main-output').innerHTML = '';
 }
 
@@ -1950,7 +1935,6 @@ function floatPgToggle() {
   const panel = document.getElementById('float-pg-panel');
   panel.style.display = floatOpen ? 'flex' : 'none';
   if (floatOpen) {
-    updateFloatLineNums();
     document.getElementById('float-pg-editor').focus();
   }
 }
@@ -1975,7 +1959,6 @@ function floatKeydown(e) {
     const ta = e.target, s = ta.selectionStart, end = ta.selectionEnd;
     ta.value = ta.value.substring(0, s) + '  ' + ta.value.substring(end);
     ta.selectionStart = ta.selectionEnd = s + 2;
-    updateFloatLineNums();
   }
   if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
     e.preventDefault();
@@ -1994,7 +1977,6 @@ function loadFloatSnippet() {
   const sel = document.getElementById('float-pg-snippet').value;
   const ta = document.getElementById('float-pg-editor');
   ta.value = SNIPPETS[sel] || '';
-  updateFloatLineNums();
   document.getElementById('float-pg-output').innerHTML = '';
 }
 
@@ -2135,37 +2117,29 @@ main.addEventListener('scroll', () => {
 // ─── INIT ───────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   // Init main playground line nums
-  updateMainLineNums();
-  updateFloatLineNums();
 
   // Init inline line nums for any visible editors
   document.querySelectorAll('.inline-editor').forEach(ta => {
     const id = ta.id.replace('ed-', '');
-    updateLineNums(id);
   });
 
   // Sync textarea scroll with line numbers
   document.querySelectorAll('.inline-editor').forEach(ta => {
     ta.addEventListener('scroll', function() {
       const id = this.id.replace('ed-', '');
-      const ln = document.getElementById('lnum-' + id);
       if (ln) ln.scrollTop = this.scrollTop;
     });
   });
 
   const mainTa = document.getElementById('pg-main-editor');
-  const mainLn = document.getElementById('pg-main-line-nums');
   if (mainTa && mainLn) {
     mainTa.addEventListener('scroll', function() {
-      mainLn.scrollTop = this.scrollTop;
     });
   }
 
   const floatTa = document.getElementById('float-pg-editor');
-  const floatLn = document.getElementById('float-pg-line-nums');
   if (floatTa && floatLn) {
     floatTa.addEventListener('scroll', function() {
-      floatLn.scrollTop = this.scrollTop;
     });
   }
 
