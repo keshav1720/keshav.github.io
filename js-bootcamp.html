@@ -510,8 +510,18 @@ body.admin-mode .module-section .section-locked-banner { display:none; }
 }
 .ap-hide-btn:hover { border-color:var(--danger); color:var(--danger); }
 
+#ap-footer-btns {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:7px; margin:10px 14px 4px;
+}
+#ap-show-all {
+  padding:8px; font-size:12px; font-weight:700; letter-spacing:.5px;
+  background:rgba(109,212,220,.1); border:1px solid rgba(109,212,220,.3);
+  border-radius:8px; color:var(--accent3); cursor:pointer;
+  transition:all .15s;
+}
+#ap-show-all:hover { background:rgba(109,212,220,.22); }
 #ap-reset-all {
-  display:block; width:calc(100% - 28px); margin:10px 14px 4px;
   padding:8px; font-size:12px; font-weight:700; letter-spacing:.5px;
   background:rgba(196,69,112,.1); border:1px solid rgba(196,69,112,.3);
   border-radius:8px; color:var(--danger); cursor:pointer;
@@ -559,6 +569,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
     <button class="nav-item" onclick="goTo('spread',this)"><span class="nav-num">11</span> Spread, Rest &amp; Default</button>
     <button class="nav-item" onclick="goTo('es6',this)"><span class="nav-num">12</span> ES6+ Features</button>
     <button class="nav-item" onclick="goTo('async',this)"><span class="nav-num">13</span> Promises &amp; Async</button>
+    <button class="nav-item" onclick="goTo('typescript',this)"><span class="nav-num">14</span> TypeScript</button>
     <button class="nav-item" onclick="goTo('playground',this)"><span class="nav-num">⟨/⟩</span> Playground</button>
     <button class="nav-item" onclick="goTo('thankyou',this)"><span class="nav-num">🎉</span> Thank You</button>
   </div>
@@ -1672,9 +1683,100 @@ loadDashboard();</textarea>
   </div>
 </section>
 
-<!-- 14. PLAYGROUND -->
-<section class="section" id="section-playground">
+
+<!-- 14. TYPESCRIPT -->
+<section class="section" id="section-typescript">
   <div class="section-eyebrow">Module 14</div>
+  <h2 class="section-title">TypeScript</h2>
+  <p class="section-desc">TypeScript is JavaScript with <strong>static types</strong>. You write <code style="background:var(--code-bg);padding:2px 6px;border-radius:4px;font-size:13px">.ts</code> files instead of <code style="background:var(--code-bg);padding:2px 6px;border-radius:4px;font-size:13px">.js</code>, and a compiler checks your types before any code runs. The output is plain JavaScript — browsers never see TypeScript directly.</p>
+
+  <div class="card">
+    <h3>Why TypeScript?</h3>
+    <p>JavaScript lets you pass anything to anything — a string where a number is expected, a missing property, a typo in a function name. You only find out at runtime, usually in production. TypeScript catches these mistakes at <em>compile time</em>, in your editor, before the page ever loads.</p>
+    <ul>
+      <li><strong>Type errors caught early</strong> — no more <code style="background:var(--code-bg);padding:2px 6px;border-radius:4px;font-size:13px">undefined is not a function</code> surprises in production</li>
+      <li><strong>Better autocomplete</strong> — your editor knows the shape of every object</li>
+      <li><strong>Self-documenting code</strong> — types act as always-up-to-date documentation</li>
+      <li><strong>Safe refactoring</strong> — rename a property and TypeScript tells you every place that breaks</li>
+    </ul>
+  </div>
+
+  <h3>Types at a glance</h3>
+  <div class="code-block">
+    <div class="code-block-header"><span class="cb-dot cb-red"></span><span class="cb-dot cb-yellow"></span><span class="cb-dot cb-green"></span><span class="cb-filename">basics.ts</span></div>
+    <pre>// Primitive types — add a colon after the variable name
+let name: string  = 'Alice';
+let age: number   = 30;
+let active: boolean = true;
+
+// Arrays
+let scores: number[] = [95, 87, 100];
+
+// Functions — annotate parameters AND return type
+function greet(user: string): string {
+  return 'Hello, ' + user;
+}
+
+// TypeScript catches this immediately ✖
+greet(42); // Argument of type 'number' is not assignable to parameter of type 'string'</pre>
+  </div>
+
+  <h3>Objects &amp; Interfaces</h3>
+  <div class="code-block">
+    <div class="code-block-header"><span class="cb-dot cb-red"></span><span class="cb-dot cb-yellow"></span><span class="cb-dot cb-green"></span><span class="cb-filename">interfaces.ts</span></div>
+    <pre>// An interface describes the shape of an object
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  role?: string;  // ? means optional
+}
+
+function displayUser(user: User): void {
+  console.log(user.name + ' — ' + user.email);
+}
+
+const trainee: User = { id: 1, name: 'Bob', email: 'bob@example.com' };
+displayUser(trainee); // ✔ works
+
+// Missing required field → compile-time error ✖
+const broken = { id: 2, name: 'Eve' };
+displayUser(broken); // Property 'email' is missing</pre>
+  </div>
+
+  <div class="compare-grid">
+    <div class="compare-col">
+      <div class="compare-col-header" style="background:rgba(196,69,112,0.12);border-bottom:1px solid rgba(196,69,112,0.2)">JavaScript</div>
+      <pre class="compare-pre">function add(a, b) {
+  return a + b;
+}
+
+// No error — JS just
+// concatenates strings
+add(2, '3'); // "23"</pre>
+    </div>
+    <div class="compare-col">
+      <div class="compare-col-header" style="background:rgba(109,212,220,0.12);border-bottom:1px solid rgba(109,212,220,0.2)">TypeScript</div>
+      <pre class="compare-pre">function add(a: number, b: number): number {
+  return a + b;
+}
+
+// Error caught before running:
+// Argument of type 'string' is not
+// assignable to parameter of type 'number'
+add(2, '3'); // ✖ compile error</pre>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <strong>Rule of thumb:</strong> Think of TypeScript as a spell-checker for your code. You write JavaScript as normal, add type annotations where it matters, and the compiler does the rest. Start with <code style="background:rgba(0,0,0,0.25);padding:2px 6px;border-radius:4px;font-size:12px">any</code> sparingly — the more specific your types, the more protection you get.
+  </div>
+
+</section>
+
+<!-- 15. PLAYGROUND -->
+<section class="section" id="section-playground">
+  <div class="section-eyebrow">Module 15</div>
   <h2 class="section-title">Playground</h2>
   <p class="section-desc">A full-featured JavaScript playground. Write, run, and experiment freely. Use the snippet selector to load examples.</p>
   <div class="pg-full">
@@ -2277,11 +2379,11 @@ function loadFloatSnippet() {
 
 // ─── NAVIGATION & PROGRESS ──────────────────────────────────────────────────
 const visited = new Set(['intro']);
-const totalModules = 14;
+const totalModules = 15;
 const sectionIds = [
   'intro','whatisjs','variables','datatypes','strings',
   'arrays','objects','comparison','control','loops',
-  'arrows','spread','es6','async','playground','thankyou'
+  'arrows','spread','es6','async','typescript','playground','thankyou'
 ];
 
 function updateProgress() {
@@ -2712,6 +2814,7 @@ const MODULES = [
   { id:'spread',     label:'11. Spread, Rest & Default' },
   { id:'es6',        label:'12. ES6+ Classes & Modules' },
   { id:'async',      label:'13. Async / Await' },
+  { id:'typescript', label:'14. TypeScript' },
 ];
 
 /* ── Supabase client (guarded — only init if URL is set) ── */
@@ -2997,6 +3100,24 @@ async function adminSetPhase(sectionId, phase) {
 }
 
 /* ── Reset all modules to phase 0 ── */
+async function adminShowAll() {
+  if (!confirm('Reveal ALL content for all viewers?')) return;
+  const all = {};
+  MODULES.forEach(({ id }) => { all[id] = 2; });
+  _phases = all;
+  updateAdminPanelUI();
+
+  const sb = getSB();
+  if (sb) {
+    await sb.from('bootcamp_session')
+      .update({ phases: all, updated_at: new Date().toISOString() })
+      .eq('id', 1);
+    if (_liveChannel) {
+      _liveChannel.send({ type: 'broadcast', event: 'phase-update', payload: { phases: all } });
+    }
+  }
+}
+
 async function adminResetAll() {
   if (!confirm('Hide all module content for viewers?')) return;
   const reset = {};
@@ -3119,7 +3240,10 @@ window.addEventListener('hashchange', () => {
   <div id="admin-panel-body">
     <!-- rows injected by buildAdminPanel() -->
   </div>
-  <button id="ap-reset-all" onclick="adminResetAll()">⟳ Hide all modules</button>
+  <div id="ap-footer-btns">
+    <button id="ap-show-all"  onclick="adminShowAll()">▶▶ Show all</button>
+    <button id="ap-reset-all" onclick="adminResetAll()">⟳ Hide all</button>
+  </div>
 </div>
 
 </body>
