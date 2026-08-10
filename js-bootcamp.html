@@ -303,7 +303,230 @@ code{font-family:'Cascadia Code','Fira Code',monospace;background:var(--code-bg)
 .api-result pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; font-size: 12px; line-height: 1.65; overflow-x: auto; color: var(--string); }
 .api-result-meta { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; display: flex; gap: 16px; }
 .api-result-meta span { color: var(--accent3); font-weight: 600; }
+
+/* ═══════════════════════════════════════════════════
+   ADMIN / REVEAL SYSTEM
+═══════════════════════════════════════════════════ */
+
+/* ── Reveal blocks: hidden by default in module sections ── */
+.module-section .reveal-concept,
+.module-section .reveal-code {
+  display: none !important;
+}
+.module-section .reveal-concept.revealed,
+.module-section .reveal-code.revealed {
+  display: block !important;
+  animation: revealFade .45s ease;
+}
+@keyframes revealFade {
+  from { opacity:0; transform:translateY(10px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* ── Admin mode: admin sees everything, hidden blocks are dimmed ── */
+body.admin-mode .module-section .reveal-concept,
+body.admin-mode .module-section .reveal-code {
+  display: block !important;
+  opacity: .25;
+  outline: 2px dashed rgba(232,184,75,.3);
+  outline-offset: 4px;
+  transition: opacity .3s;
+}
+body.admin-mode .module-section .reveal-concept.revealed,
+body.admin-mode .module-section .reveal-code.revealed {
+  opacity: 1;
+  outline: none;
+}
+
+/* ── Section "locked" banner when phase=0 ── */
+.module-section .section-locked-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  background: rgba(232,184,75,.07);
+  border: 1px dashed rgba(232,184,75,.25);
+  border-radius: 10px;
+  color: var(--text-muted);
+  font-size: 13px;
+  margin-bottom: 18px;
+}
+body.admin-mode .module-section .section-locked-banner { display:none; }
+.module-section[data-phase="0"] .section-locked-banner { display:flex; }
+.module-section:not([data-phase="0"]) .section-locked-banner { display:none; }
+
+/* ═══════════════════════════════════════════════════
+   ADMIN LOGIN MODAL
+═══════════════════════════════════════════════════ */
+#admin-login-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 2000;
+  background: rgba(8,18,32,.92);
+  backdrop-filter: blur(6px);
+  align-items: center; justify-content: center;
+}
+#admin-login-overlay.visible { display:flex; }
+#admin-login-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 40px 36px;
+  width: 340px;
+  box-shadow: 0 24px 60px rgba(0,0,0,.6);
+}
+#admin-login-box h2 {
+  font-size: 20px; font-weight: 800;
+  color: var(--accent); margin-bottom: 6px; text-align:center;
+}
+#admin-login-box .login-sub {
+  font-size: 12px; color: var(--text-muted);
+  text-align: center; margin-bottom: 28px; letter-spacing:.5px;
+}
+.admin-field {
+  width: 100%; box-sizing:border-box;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text);
+  font-size: 14px; padding: 10px 14px;
+  margin-bottom: 12px; outline:none;
+  transition: border-color .18s;
+}
+.admin-field:focus { border-color: var(--accent); }
+#admin-login-btn {
+  width:100%; padding: 11px;
+  background: var(--accent); color: var(--bg);
+  border: none; border-radius: 8px;
+  font-size: 14px; font-weight: 800; cursor:pointer;
+  letter-spacing:.5px; transition: background .18s;
+}
+#admin-login-btn:hover { background: #d4a540; }
+#admin-login-error {
+  font-size: 12px; color: var(--danger);
+  text-align:center; margin-top:10px; min-height:18px;
+}
+#admin-login-cancel {
+  display:block; text-align:center;
+  font-size:12px; color:var(--text-muted);
+  margin-top:12px; cursor:pointer; text-decoration:underline;
+}
+
+/* ═══════════════════════════════════════════════════
+   FLOATING ADMIN PANEL
+═══════════════════════════════════════════════════ */
+#admin-panel {
+  display: none;
+  position: fixed; top:16px; right:16px;
+  width: 310px; max-height: calc(100vh - 32px);
+  background: var(--surface);
+  border: 1px solid rgba(232,184,75,.4);
+  border-radius: 14px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.7);
+  z-index: 1800;
+  flex-direction: column;
+  overflow: hidden;
+  user-select: none;
+}
+#admin-panel.visible { display:flex; }
+
+#admin-panel-header {
+  padding: 12px 14px;
+  background: rgba(232,184,75,.1);
+  border-bottom: 1px solid rgba(232,184,75,.25);
+  display:flex; align-items:center; justify-content:space-between;
+  cursor: move; flex-shrink:0;
+}
+#admin-panel-header .ap-title {
+  font-size:13px; font-weight:800; color:var(--accent);
+  display:flex; align-items:center; gap:7px;
+}
+.ap-header-btns { display:flex; gap:6px; }
+.ap-header-btns button {
+  background: var(--surface2); border:1px solid var(--border);
+  color:var(--text-muted); font-size:11px; padding:3px 9px;
+  border-radius:5px; cursor:pointer; transition:all .15s;
+}
+.ap-header-btns button:hover { color:var(--text); border-color:var(--accent); }
+#ap-logout-btn { color:var(--danger) !important; }
+#ap-logout-btn:hover { border-color:var(--danger) !important; }
+
+#admin-panel-conn {
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--border);
+  display:flex; align-items:center; gap:7px;
+  font-size:11px; color:var(--text-muted); flex-shrink:0;
+}
+.conn-dot {
+  width:7px; height:7px; border-radius:50%;
+  background: var(--danger); flex-shrink:0;
+  transition: background .3s;
+}
+.conn-dot.connected { background: var(--accent3); }
+
+#admin-panel-body {
+  overflow-y:auto; flex:1; padding:8px 0;
+}
+#admin-panel-body::-webkit-scrollbar { width:4px; }
+#admin-panel-body::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+
+.ap-module {
+  padding:10px 14px 12px;
+  border-bottom:1px solid var(--border);
+  transition: background .15s;
+}
+.ap-module:last-child { border-bottom:none; }
+.ap-module-name {
+  font-size:12px; font-weight:700; color:var(--text);
+  margin-bottom:8px; display:flex; align-items:center; gap:7px;
+}
+.ap-phase-indicator {
+  font-size:10px; letter-spacing:.5px;
+  padding:1px 7px; border-radius:8px;
+  background:var(--surface2); color:var(--text-muted);
+  font-weight:600; text-transform:uppercase;
+}
+.ap-phase-indicator.p1 { background:rgba(109,212,220,.15); color:var(--accent3); }
+.ap-phase-indicator.p2 { background:rgba(168,200,255,.15); color:var(--accent2); }
+.ap-phase-indicator.p3 { background:rgba(232,184,75,.15); color:var(--accent); }
+
+.ap-phase-btns {
+  display:grid; grid-template-columns:1fr 1fr auto;
+  gap:5px;
+}
+.ap-phase-btn {
+  padding:5px 4px; font-size:11px; font-weight:700;
+  border:1px solid var(--border); border-radius:6px;
+  cursor:pointer; transition:all .15s;
+  background:var(--surface2); color:var(--text-muted);
+  letter-spacing:.2px; text-align:center;
+}
+.ap-phase-btn:hover { border-color:var(--accent3); color:var(--text); }
+.ap-phase-btn.active-concept { background:rgba(109,212,220,.2); border-color:var(--accent3); color:var(--accent3); }
+.ap-phase-btn.active-code    { background:rgba(168,200,255,.2); border-color:var(--accent2); color:var(--accent2); }
+.ap-phase-btn.active-editor  { background:rgba(232,184,75,.2);  border-color:var(--accent);  color:var(--accent); }
+.ap-hide-btn {
+  padding:5px 8px; font-size:11px; font-weight:700;
+  border:1px solid var(--border); border-radius:6px;
+  cursor:pointer; transition:all .15s;
+  background:var(--surface2); color:var(--text-muted);
+}
+.ap-hide-btn:hover { border-color:var(--danger); color:var(--danger); }
+
+#ap-reset-all {
+  display:block; width:calc(100% - 28px); margin:10px 14px 4px;
+  padding:8px; font-size:12px; font-weight:700; letter-spacing:.5px;
+  background:rgba(196,69,112,.1); border:1px solid rgba(196,69,112,.3);
+  border-radius:8px; color:var(--danger); cursor:pointer;
+  transition:all .15s;
+}
+#ap-reset-all:hover { background:rgba(196,69,112,.2); }
+
+
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+/* ── FILL THESE IN from Supabase → Settings → API ── */
+const SUPABASE_URL      = 'https://hhcivpnmcoximijdjxdp.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhoY2l2cG5tY294aW1pamRqeGRwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYzNDkyMjEsImV4cCI6MjEwMTkyNTIyMX0.OO_A-HUGkRVICtEFLuTdI98VNslZP79UFM2Hc-rTnR8';
+</script>
 </head>
 <body>
 
@@ -2085,33 +2308,45 @@ function goTo(id, btn) {
   }
 }
 
-// Highlight nav on scroll
+// Highlight nav on scroll — uses getBoundingClientRect so it works
+// regardless of CSS positioning context or hidden content shrinking sections
 const main = document.getElementById('main');
 let scrollTimer;
+
+function setActiveNav(id) {
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(btn => {
+    if ((btn.getAttribute('onclick') || '').includes("'" + id + "'")) {
+      btn.classList.add('active');
+      // Scroll sidebar nav item into view if needed
+      btn.scrollIntoView({ block: 'nearest' });
+      if (id !== 'intro') {
+        visited.add(id);
+        btn.classList.add('visited');
+        updateProgress();
+      }
+    }
+  });
+}
+
 main.addEventListener('scroll', () => {
   clearTimeout(scrollTimer);
   scrollTimer = setTimeout(() => {
-    const scrollTop = main.scrollTop;
+    // Trigger point: 35% from the top of the #main viewport
+    const trigger = main.getBoundingClientRect().top + main.clientHeight * 0.35;
+
+    // Walk sections from bottom to top; first one whose top is at or above
+    // the trigger point is the "current" section
+    let activeId = sectionIds[0];
     for (let i = sectionIds.length - 1; i >= 0; i--) {
       const sec = document.getElementById('section-' + sectionIds[i]);
-      if (sec && sec.offsetTop <= scrollTop + 100) {
-        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-        const navBtns = document.querySelectorAll('.nav-item');
-        navBtns.forEach(btn => {
-          const onclick = btn.getAttribute('onclick') || '';
-          if (onclick.includes("'" + sectionIds[i] + "'")) {
-            btn.classList.add('active');
-            if (sectionIds[i] !== 'intro') {
-              visited.add(sectionIds[i]);
-              btn.classList.add('visited');
-            }
-          }
-        });
-        updateProgress();
+      if (sec && sec.getBoundingClientRect().top <= trigger) {
+        activeId = sectionIds[i];
         break;
       }
     }
-  }, 80);
+    setActiveNav(activeId);
+  }, 50);
 });
 
 // ─── INIT ───────────────────────────────────────────────────────────────────
@@ -2458,6 +2693,434 @@ function applyHighlighting() {
 
 
 
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ADMIN SYSTEM — Supabase-powered live content reveal
+   ══════════════════════════════════════════════════════════════════════════ */
+
+const MODULES = [
+  { id:'whatisjs',   label:'1. What is JavaScript' },
+  { id:'variables',  label:'2. Variables & Scope' },
+  { id:'datatypes',  label:'3. Data Types' },
+  { id:'strings',    label:'4. Strings' },
+  { id:'arrays',     label:'5. Arrays' },
+  { id:'objects',    label:'6. Objects' },
+  { id:'comparison', label:'7. Comparison & Equality' },
+  { id:'control',    label:'8. Control Structures' },
+  { id:'loops',      label:'9. Loops' },
+  { id:'arrows',     label:'10. Arrow Functions' },
+  { id:'spread',     label:'11. Spread, Rest & Default' },
+  { id:'es6',        label:'12. ES6+ Classes & Modules' },
+  { id:'async',      label:'13. Async / Await' },
+];
+
+/* ── Supabase client (guarded — only init if URL is set) ── */
+let _sb = null;
+function getSB() {
+  if (_sb) return _sb;
+  if (!SUPABASE_URL || SUPABASE_URL === 'YOUR_SUPABASE_URL') return null;
+  _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  return _sb;
+}
+
+/* ── Session state cache ── */
+let _phases = {};
+
+/* ══════════════════════════════════════════════════
+   CONTENT CLASSIFICATION
+   Adds reveal-concept / reveal-code / reveal-editor
+   classes to section content, then hides them until
+   the admin reveals each phase.
+══════════════════════════════════════════════════ */
+function classifyRevealBlocks() {
+  MODULES.forEach(({ id }) => {
+    const sec = document.getElementById('section-' + id);
+    if (!sec) return;
+    sec.classList.add('module-section');
+    sec.dataset.phase = '0';
+
+    // Concept: all descriptive text, callout boxes, tables — NO code blocks
+    sec.querySelectorAll(
+      '.section-desc, .card, .styled-table, h3, h4, p, ul, .info-box, ' +
+      '.async-explainer, .async-anim-wrap, .async-live-demo'
+    ).forEach(el => el.classList.add('reveal-concept'));
+
+    // Code: syntax-highlighted blocks + editor (shown together)
+    sec.querySelectorAll('.code-block, .compare-grid, .try-it')
+      .forEach(el => el.classList.add('reveal-code'));
+
+    // Add locked banner (shown when phase === 0, non-admin)
+    const banner = document.createElement('div');
+    banner.className = 'section-locked-banner';
+    banner.innerHTML = '🔒 <span>Content will appear when the instructor reveals it.</span>';
+    sec.querySelector('h2.section-title')?.insertAdjacentElement('afterend', banner);
+  });
+}
+
+/* ── Apply a phases map to the DOM ── */
+function applyPhases(phases) {
+  _phases = phases || {};
+  MODULES.forEach(({ id }) => {
+    const sec = document.getElementById('section-' + id);
+    if (!sec) return;
+    const phase = Number(_phases[id] || 0);
+    applyPhaseToSection(sec, phase);
+  });
+  updateAdminPanelUI();
+}
+
+function applyPhaseToSection(sec, phase) {
+  sec.dataset.phase = String(phase);
+
+  // Reset all revealed states
+  sec.querySelectorAll('.reveal-concept, .reveal-code')
+    .forEach(el => el.classList.remove('revealed'));
+
+  // Phase 1: concept text only  |  Phase 2: concept + code + editor
+  if (phase >= 1) sec.querySelectorAll('.reveal-concept').forEach(el => el.classList.add('revealed'));
+  if (phase >= 2) sec.querySelectorAll('.reveal-code').forEach(el => el.classList.add('revealed'));
+}
+
+/* ══════════════════════════════════════════════════
+   VIEWER — Realtime subscription
+══════════════════════════════════════════════════ */
+/* Shared broadcast channel — one instance used by both viewer and admin */
+let _liveChannel = null;
+
+function setConnStatus(status) {
+  const dot   = document.getElementById('conn-dot');
+  const label = document.getElementById('conn-label');
+  if (!dot) return;
+  const ok = status === 'SUBSCRIBED';
+  dot.classList.toggle('connected', ok);
+  if (label) label.textContent = ok
+    ? 'Live — viewers see your changes instantly'
+    : 'Reconnecting…';
+}
+
+function joinLiveChannel(sb) {
+  if (_liveChannel) return _liveChannel; // already joined
+  _liveChannel = sb.channel('bootcamp-live', {
+    config: { broadcast: { self: false } }
+  });
+  _liveChannel
+    .on('broadcast', { event: 'phase-update' }, ({ payload }) => {
+      if (document.body.classList.contains('admin-mode')) {
+        // Another admin changed something — sync panel
+        _phases = payload.phases || {};
+        updateAdminPanelUI();
+      } else {
+        applyPhases(payload.phases);
+      }
+    })
+    .subscribe(setConnStatus);
+  return _liveChannel;
+}
+
+async function initViewer() {
+  const sb = getSB();
+  if (!sb) return;
+
+  // Fetch the latest state saved by the admin (for viewers who join mid-session)
+  const { data } = await sb
+    .from('bootcamp_session')
+    .select('phases')
+    .eq('id', 1)
+    .single();
+  if (data) applyPhases(data.phases);
+
+  joinLiveChannel(sb);
+}
+
+/* ══════════════════════════════════════════════════
+   ADMIN — Login / Logout
+══════════════════════════════════════════════════ */
+function isAdminLoggedIn() {
+  return sessionStorage.getItem('bootcamp-admin') === 'true';
+}
+
+function showAdminLogin() {
+  document.getElementById('admin-login-overlay').classList.add('visible');
+  setTimeout(() => document.getElementById('admin-username').focus(), 100);
+}
+function adminCloseLogin() {
+  document.getElementById('admin-login-overlay').classList.remove('visible');
+  // Remove #admin from URL without reload
+  history.replaceState(null, '', window.location.pathname);
+}
+
+async function adminLogin() {
+  const username = document.getElementById('admin-username').value.trim();
+  const password = document.getElementById('admin-password').value;
+  const errEl    = document.getElementById('admin-login-error');
+  const btn      = document.getElementById('admin-login-btn');
+
+  if (!username || !password) { errEl.textContent = 'Enter username and password.'; return; }
+
+  const sb = getSB();
+  if (!sb) {
+    errEl.textContent = 'Supabase not configured. Fill in SUPABASE_URL and SUPABASE_ANON_KEY.';
+    return;
+  }
+
+  btn.textContent = 'Logging in…'; btn.disabled = true;
+  errEl.textContent = '';
+
+  const { data, error } = await sb
+    .from('bootcamp_admins')
+    .select('id')
+    .eq('username', username)
+    .eq('password', password)
+    .maybeSingle();
+
+  btn.textContent = 'Login'; btn.disabled = false;
+
+  // Log full Supabase response for debugging
+  console.log('[Admin login] data:', data, '| error:', error);
+
+  if (error) {
+    errEl.textContent = 'Error: ' + error.message;
+    return;
+  }
+
+  if (data) {
+    sessionStorage.setItem('bootcamp-admin', 'true');
+    sessionStorage.setItem('bootcamp-admin-user', username);
+    document.getElementById('admin-login-overlay').classList.remove('visible');
+    activateAdminMode();
+  } else {
+    errEl.textContent = 'No matching user found. Check username/password match what is in Supabase.';
+  }
+}
+
+// Allow Enter key in login form
+document.addEventListener('DOMContentLoaded', () => {
+  ['admin-username','admin-password'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('keydown', e => { if (e.key === 'Enter') adminLogin(); });
+  });
+});
+
+function adminLogout() {
+  sessionStorage.removeItem('bootcamp-admin');
+  sessionStorage.removeItem('bootcamp-admin-user');
+  document.getElementById('admin-panel').classList.remove('visible');
+  document.body.classList.remove('admin-mode');
+  history.replaceState(null, '', window.location.pathname);
+}
+
+/* ── Activate admin mode (called after successful login or page reload) ── */
+async function activateAdminMode() {
+  document.body.classList.add('admin-mode');
+  buildAdminPanel();
+  document.getElementById('admin-panel').classList.add('visible');
+
+  // Load current phases and start realtime
+  const sb = getSB();
+  if (sb) {
+    const { data } = await sb
+      .from('bootcamp_session')
+      .select('phases')
+      .eq('id', 1)
+      .single();
+    if (data) { _phases = data.phases || {}; updateAdminPanelUI(); }
+
+    // Join the shared broadcast channel so the admin panel stays in sync
+    // if two instructors are logged in simultaneously
+    joinLiveChannel(sb);
+  }
+}
+
+/* ══════════════════════════════════════════════════
+   ADMIN — Panel UI
+══════════════════════════════════════════════════ */
+function buildAdminPanel() {
+  const body = document.getElementById('admin-panel-body');
+  body.innerHTML = MODULES.map(({ id, label }) => `
+    <div class="ap-module" id="apm-${id}">
+      <div class="ap-module-name">
+        ${label}
+        <span class="ap-phase-indicator" id="api-${id}">hidden</span>
+      </div>
+      <div class="ap-phase-btns">
+        <button class="ap-phase-btn" id="apb-${id}-1"
+          onclick="adminSetPhase('${id}',1)" title="Show concept text only">Concept</button>
+        <button class="ap-phase-btn" id="apb-${id}-2"
+          onclick="adminSetPhase('${id}',2)" title="Show code samples + editor">Code + Editor</button>
+        <button class="ap-hide-btn"
+          onclick="adminSetPhase('${id}',0)" title="Hide all content">✕</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function updateAdminPanelUI() {
+  const LABELS  = ['hidden', 'concept', 'code + editor'];
+  const IND_CLS = ['', 'p1', 'p2'];
+  const BTN_ACT = ['', 'active-concept', 'active-code'];
+
+  MODULES.forEach(({ id }) => {
+    const phase = Number(_phases[id] || 0);
+    const ind = document.getElementById('api-' + id);
+    if (ind) {
+      ind.textContent = LABELS[phase] || 'hidden';
+      ind.className = 'ap-phase-indicator ' + (IND_CLS[phase] || '');
+    }
+    [1, 2].forEach(p => {
+      const btn = document.getElementById(`apb-${id}-${p}`);
+      if (btn) btn.className = 'ap-phase-btn' + (phase === p ? ' ' + BTN_ACT[p] : '');
+    });
+
+    // Also update section DOM phase
+    const sec = document.getElementById('section-' + id);
+    if (sec) applyPhaseToSection(sec, phase);
+  });
+}
+
+/* ── Set phase for one module and push to Supabase ── */
+async function adminSetPhase(sectionId, phase) {
+  _phases = { ..._phases, [sectionId]: phase };
+  updateAdminPanelUI(); // instant local update
+
+  const sb = getSB();
+  if (!sb) { console.warn('Supabase not configured'); return; }
+
+  // Persist to DB (so late-joining viewers get the current state)
+  await sb.from('bootcamp_session')
+    .update({ phases: _phases, updated_at: new Date().toISOString() })
+    .eq('id', 1);
+
+  // Broadcast instantly to all connected viewers (no WebSocket lag from DB polling)
+  if (_liveChannel) {
+    _liveChannel.send({ type: 'broadcast', event: 'phase-update', payload: { phases: _phases } });
+  }
+}
+
+/* ── Reset all modules to phase 0 ── */
+async function adminResetAll() {
+  if (!confirm('Hide all module content for viewers?')) return;
+  const reset = {};
+  MODULES.forEach(({ id }) => { reset[id] = 0; });
+  _phases = reset;
+  updateAdminPanelUI();
+
+  const sb = getSB();
+  if (sb) {
+    await sb.from('bootcamp_session')
+      .update({ phases: reset, updated_at: new Date().toISOString() })
+      .eq('id', 1);
+    if (_liveChannel) {
+      _liveChannel.send({ type: 'broadcast', event: 'phase-update', payload: { phases: reset } });
+    }
+  }
+}
+
+/* ── Minimise panel to a slim tab ── */
+let _panelMinimised = false;
+function adminMinimize() {
+  const body   = document.getElementById('admin-panel-body');
+  const conn   = document.getElementById('admin-panel-conn');
+  const reset  = document.getElementById('ap-reset-all');
+  _panelMinimised = !_panelMinimised;
+  [body, conn, reset].forEach(el => { if (el) el.style.display = _panelMinimised ? 'none' : ''; });
+}
+
+/* ── Drag the panel ── */
+function adminPanelDrag(e) {
+  const panel = document.getElementById('admin-panel');
+  const startX = e.clientX - panel.offsetLeft;
+  const startY = e.clientY - panel.offsetTop;
+  function onMove(ev) {
+    panel.style.left   = Math.max(0, ev.clientX - startX) + 'px';
+    panel.style.top    = Math.max(0, ev.clientY - startY) + 'px';
+    panel.style.right  = 'auto';
+    panel.style.bottom = 'auto';
+  }
+  function onUp() {
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onUp);
+  }
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('mouseup', onUp);
+}
+
+/* ══════════════════════════════════════════════════
+   HASH ROUTING  —  #admin triggers login
+══════════════════════════════════════════════════ */
+function handleAdminHash() {
+  if (window.location.hash === '#admin') {
+    if (isAdminLoggedIn()) {
+      activateAdminMode();
+    } else {
+      showAdminLogin();
+    }
+  }
+}
+
+/* ══════════════════════════════════════════════════
+   BOOT
+══════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  // Classify all section content into reveal blocks
+  classifyRevealBlocks();
+
+  // Check if already admin from previous login this session
+  if (isAdminLoggedIn()) {
+    activateAdminMode();
+  } else {
+    // Viewer mode: load state + subscribe
+    initViewer();
+    handleAdminHash();
+  }
+});
+
+window.addEventListener('hashchange', () => {
+  if (window.location.hash === '#admin') {
+    if (isAdminLoggedIn()) {
+      activateAdminMode();
+    } else {
+      showAdminLogin();
+    }
+  }
+});
+
 </script>
+
+<!-- ═══════════════════════════════════════════════════
+     ADMIN LOGIN MODAL
+═══════════════════════════════════════════════════ -->
+<div id="admin-login-overlay">
+  <div id="admin-login-box">
+    <h2>⚙ Admin Login</h2>
+    <p class="login-sub">NEWBIES 2026 JS BOOTCAMP</p>
+    <input class="admin-field" type="text"     id="admin-username" placeholder="Username" autocomplete="off"/>
+    <input class="admin-field" type="password" id="admin-password" placeholder="Password" autocomplete="off"/>
+    <button id="admin-login-btn" onclick="adminLogin()">Login</button>
+    <p id="admin-login-error"></p>
+    <span id="admin-login-cancel" onclick="adminCloseLogin()">← Back to app</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     FLOATING ADMIN CONTROL PANEL
+═══════════════════════════════════════════════════ -->
+<div id="admin-panel">
+  <div id="admin-panel-header" onmousedown="adminPanelDrag(event)">
+    <div class="ap-title">⚙ Admin Panel</div>
+    <div class="ap-header-btns">
+      <button onclick="adminMinimize()" title="Minimise">−</button>
+      <button id="ap-logout-btn" onclick="adminLogout()">Logout</button>
+    </div>
+  </div>
+  <div id="admin-panel-conn">
+    <div class="conn-dot" id="conn-dot"></div>
+    <span id="conn-label">Connecting…</span>
+  </div>
+  <div id="admin-panel-body">
+    <!-- rows injected by buildAdminPanel() -->
+  </div>
+  <button id="ap-reset-all" onclick="adminResetAll()">⟳ Hide all modules</button>
+</div>
+
 </body>
 </html>
