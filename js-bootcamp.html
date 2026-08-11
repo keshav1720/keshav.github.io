@@ -308,13 +308,15 @@ code{font-family:'Cascadia Code','Fira Code',monospace;background:var(--code-bg)
    ADMIN / REVEAL SYSTEM
 ═══════════════════════════════════════════════════ */
 
-/* ── Reveal blocks: hidden by default in module sections ── */
+/* ── Reveal blocks: hidden by default for trainees ── */
 .module-section .reveal-concept,
-.module-section .reveal-code {
+.module-section .reveal-code,
+.module-section .reveal-step {
   display: none !important;
 }
 .module-section .reveal-concept.revealed,
-.module-section .reveal-code.revealed {
+.module-section .reveal-code.revealed,
+.module-section .reveal-step.revealed {
   display: block !important;
   animation: revealFade .45s ease;
 }
@@ -323,17 +325,22 @@ code{font-family:'Cascadia Code','Fira Code',monospace;background:var(--code-bg)
   to   { opacity:1; transform:translateY(0); }
 }
 
-/* ── Admin mode: admin sees everything, hidden blocks are dimmed ── */
+/* ── Admin mode: see all content; dimmed = hidden from trainees ── */
 body.admin-mode .module-section .reveal-concept,
-body.admin-mode .module-section .reveal-code {
+body.admin-mode .module-section .reveal-code,
+body.admin-mode .module-section .reveal-step {
   display: block !important;
-  opacity: .25;
+  opacity: 0.28;
   outline: 2px dashed rgba(232,184,75,.3);
   outline-offset: 4px;
-  transition: opacity .3s;
+  border-radius: 6px;
+  transition: opacity .25s, outline-color .25s;
+  position: relative;
 }
+/* Revealed = full opacity, no outline */
 body.admin-mode .module-section .reveal-concept.revealed,
-body.admin-mode .module-section .reveal-code.revealed {
+body.admin-mode .module-section .reveal-code.revealed,
+body.admin-mode .module-section .reveal-step.revealed {
   opacity: 1;
   outline: none;
 }
@@ -510,6 +517,32 @@ body.admin-mode .module-section .section-locked-banner { display:none; }
 }
 .ap-hide-btn:hover { border-color:var(--danger); color:var(--danger); }
 
+/* ── Per-chunk toggle rows ── */
+.ap-module-header { display:flex; align-items:center; justify-content:space-between; padding:6px 0 3px; }
+.ap-module-title  { font-size:11px; font-weight:600; color:var(--text); flex:1; min-width:0; }
+.ap-module-actions { display:flex; gap:4px; flex-shrink:0; }
+.ap-mini-btn {
+  padding:2px 7px; border-radius:4px; font-size:9px; cursor:pointer;
+  border:1px solid rgba(255,255,255,.15); background:transparent; color:var(--text-muted);
+  transition:all .15s;
+}
+.ap-mini-btn:hover { border-color:var(--accent); color:var(--accent); }
+.ap-chunks { display:flex; flex-direction:column; gap:3px; padding-bottom:5px; }
+.ap-chunk-row {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:4px 6px; border-radius:6px; background:rgba(255,255,255,.025);
+}
+.ap-chunk-label { font-size:11px; color:var(--text-muted); flex:1; min-width:0; }
+.ap-chunk-btn {
+  display:flex; align-items:center; gap:4px; padding:3px 9px;
+  border-radius:20px; border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.04); color:var(--text-muted);
+  font-size:10px; cursor:pointer; transition:all .2s; white-space:nowrap; flex-shrink:0;
+}
+.ap-chunk-btn.on {
+  background:rgba(232,184,75,.18); border-color:var(--accent); color:var(--accent); font-weight:700;
+}
+
 #ap-footer-btns {
   display:grid; grid-template-columns:1fr 1fr;
   gap:7px; margin:10px 14px 4px;
@@ -663,6 +696,7 @@ console.log(typeof function(){}); // function</textarea>
     <tr><td><code>let</code></td><td>Block</td><td>✓</td><td>✗ (TDZ)</td><td><span class="badge badge-yellow">Reassigning</span></td></tr>
     <tr><td><code>const</code></td><td>Block</td><td>✗</td><td>✗ (TDZ)</td><td><span class="badge badge-green">Default</span></td></tr>
   </table>
+  <div class="reveal-step" data-step="2">
   <h3>Scope Difference</h3>
   <div class="compare-grid">
     <div class="compare-col">
@@ -725,6 +759,7 @@ console.log(name, age);
       </div>
     </div>
   </div>
+  </div><!-- /var-step2 -->
 </section>
 
 <!-- 3. DATA TYPES -->
@@ -795,6 +830,7 @@ falsyValues.forEach(v => {
   <div class="section-eyebrow">Module 4</div>
   <h2 class="section-title">Strings &amp; Template Literals</h2>
   <p class="section-desc">Template literals (backtick strings) make string construction clean and readable — no more messy concatenation.</p>
+  <div class="reveal-step" data-step="2">
   <div class="compare-grid">
     <div class="compare-col">
       <div class="compare-col-header old">Old: Concatenation</div>
@@ -855,6 +891,7 @@ console.log(first, second, rest.join(""));</textarea>
       </div>
     </div>
   </div>
+  </div><!-- /str-step2 -->
 </section>
 
 <!-- 5. ARRAYS -->
@@ -862,6 +899,7 @@ console.log(first, second, rest.join(""));</textarea>
   <div class="section-eyebrow">Module 5</div>
   <h2 class="section-title">Arrays</h2>
   <p class="section-desc">Arrays store ordered lists. Modern JavaScript gives you powerful methods to transform them without mutations.</p>
+  <div class="reveal-step" data-step="2">
   <div class="code-block">
     <div class="code-block-header"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="code-block-label">array basics &amp; destructuring</span></div>
     <pre>const fruits = ["apple", "banana", "cherry"];
@@ -877,6 +915,8 @@ console.log(first, last, website);
 const [,, site] = details;
 console.log(site); // "spoon.com"</pre>
   </div>
+  </div><!-- /arr5-step2 -->
+  <div class="reveal-step" data-step="3">
   <h3>Array Methods</h3>
   <div class="code-block">
     <div class="code-block-header"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="code-block-label">filter · map · reduce · find</span></div>
@@ -905,6 +945,8 @@ const result = nums
   .reduce((a, b) => a + b, 0);
 console.log(result); // 300</pre>
   </div>
+  </div><!-- /arr5-step3 -->
+  <div class="reveal-step" data-step="4">
   <div class="try-it">
     <button class="try-it-toggle" onclick="toggleTryIt(this)">▶ Try it yourself</button>
     <div class="try-it-body" style="display:none">
@@ -936,6 +978,7 @@ console.log(range); // [1,2,3,4,5]</textarea>
       </div>
     </div>
   </div>
+  </div><!-- /arr5-step4 -->
 </section>
 
 <!-- 6. OBJECTS -->
@@ -943,6 +986,7 @@ console.log(range); // [1,2,3,4,5]</textarea>
   <div class="section-eyebrow">Module 6</div>
   <h2 class="section-title">Objects</h2>
   <p class="section-desc">Objects are the core data structure in JavaScript — key-value pairs that can hold any type, including functions.</p>
+  <div class="reveal-step" data-step="2">
   <div class="code-block">
     <div class="code-block-header"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="code-block-label">object literals &amp; access</span></div>
     <pre>const person = {
@@ -958,6 +1002,8 @@ console.log(person.firstName); // "Ada"
 const key = "age";
 console.log(person[key]); // 36</pre>
   </div>
+  </div><!-- /obj-step2 -->
+  <div class="reveal-step" data-step="3">
   <h3>Destructuring</h3>
   <div class="code-block">
     <div class="code-block-header"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="code-block-label">rename &amp; defaults</span></div>
@@ -970,6 +1016,8 @@ const settings = { theme: "dark" };
 const { theme, width = 200 } = settings;
 console.log(theme, width); // "dark" 200</pre>
   </div>
+  </div><!-- /obj-step3 -->
+  <div class="reveal-step" data-step="4">
   <h3>Enhanced Object Literals (ES6)</h3>
   <div class="compare-grid">
     <div class="compare-col">
@@ -995,6 +1043,8 @@ const obj = {
 };</pre>
     </div>
   </div>
+  </div><!-- /obj-step4 -->
+  <div class="reveal-step" data-step="5">
   <div class="try-it">
     <button class="try-it-toggle" onclick="toggleTryIt(this)">▶ Try it yourself</button>
     <div class="try-it-body" style="display:none">
@@ -1026,6 +1076,7 @@ Object.entries(employee).forEach(([k, v]) => {
       </div>
     </div>
   </div>
+  </div><!-- /obj-step5 -->
 </section>
 
 <!-- 7. COMPARISON -->
@@ -1086,10 +1137,10 @@ process(42);</textarea>
   <div class="section-eyebrow">Module 8</div>
   <h2 class="section-title">Control Structures</h2>
   <p class="section-desc">Control structures let you make decisions in your code. <code>if/else</code> for conditions, <code>switch</code> for multi-branch matching.</p>
-  <div class="compare-grid">
-    <div class="compare-col">
-      <div class="compare-col-header new">if / else if / else</div>
-      <pre>const hour = new Date().getHours();
+  <div class="reveal-step" data-step="2">
+  <div class="code-block">
+    <div class="code-block-header"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="code-block-label">if / else if / else</span></div>
+    <pre>const hour = new Date().getHours();
 let greeting;
 
 if (hour &lt; 12) {
@@ -1100,10 +1151,12 @@ if (hour &lt; 12) {
   greeting = "Good evening";
 }
 console.log(greeting);</pre>
-    </div>
-    <div class="compare-col">
-      <div class="compare-col-header new">switch</div>
-      <pre>const day = new Date().getDay();
+  </div>
+  </div><!-- /ctrl-step2 -->
+  <div class="reveal-step" data-step="3">
+  <div class="code-block">
+    <div class="code-block-header"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="code-block-label">switch</span></div>
+    <pre>const day = new Date().getDay();
 let type;
 
 switch (day) {
@@ -1115,9 +1168,12 @@ switch (day) {
     type = "Weekday";
 }
 console.log(type);</pre>
-    </div>
   </div>
+  </div><!-- /ctrl-step3 -->
+  <div class="reveal-step" data-step="4">
   <div class="info-box"><strong>Ternary operator</strong> — a compact one-liner: <code>const label = age &gt;= 18 ? "adult" : "minor";</code></div>
+  </div><!-- /ctrl-step4 -->
+  <div class="reveal-step" data-step="5">
   <div class="try-it">
     <button class="try-it-toggle" onclick="toggleTryIt(this)">▶ Try it yourself</button>
     <div class="try-it-body" style="display:none">
@@ -1146,6 +1202,7 @@ console.log(displayName);</textarea>
       </div>
     </div>
   </div>
+  </div><!-- /ctrl-step5 -->
 </section>
 
 <!-- 9. LOOPS -->
@@ -1210,6 +1267,7 @@ for (let i = 1; i <= 20; i++) {
   <div class="section-eyebrow">Module 10</div>
   <h2 class="section-title">Arrow Functions</h2>
   <p class="section-desc">Arrow functions provide a concise syntax and lexically bind <code>this</code> — meaning they inherit <code>this</code> from the surrounding scope.</p>
+  <div class="reveal-step" data-step="2">
   <div class="code-block">
     <div class="code-block-header"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="code-block-label">evolution of function syntax</span></div>
     <pre>// Traditional function
@@ -1230,6 +1288,8 @@ const greet = () => "Hello!";
 // Return an object literal (wrap in parens)
 const makeUser = name => ({ name, createdAt: Date.now() });</pre>
   </div>
+  </div><!-- /arr-step2 -->
+  <div class="reveal-step" data-step="3">
   <h3>this Context</h3>
   <div class="compare-grid">
     <div class="compare-col">
@@ -1258,6 +1318,8 @@ const makeUser = name => ({ name, createdAt: Date.now() });</pre>
     </div>
   </div>
   <div class="info-box danger"><strong>Do NOT use arrow functions for:</strong> object methods (where you need <code>this</code> to be the object), event listeners where you need <code>this</code> to be the element, or constructor functions.</div>
+  </div><!-- /arr-step3 -->
+  <div class="reveal-step" data-step="4">
   <div class="try-it">
     <button class="try-it-toggle" onclick="toggleTryIt(this)">▶ Try it yourself</button>
     <div class="try-it-body" style="display:none">
@@ -1288,6 +1350,7 @@ console.log(result);</textarea>
       </div>
     </div>
   </div>
+  </div><!-- /arr-step4 -->
 </section>
 
 <!-- 11. SPREAD REST DEFAULT -->
@@ -1506,6 +1569,7 @@ console.log(c instanceof Shape, c instanceof Circle);</textarea>
   <h2 class="section-title">Promises &amp; Async/Await</h2>
   <p class="section-desc">JavaScript is single-threaded — it can only do one thing at a time. Promises and async/await let it kick off work in the background and pick up the result later, without freezing the page.</p>
 
+  <div class="reveal-step" data-step="1">
   <h3>How Async JavaScript Works</h3>
   <p class="section-desc" style="margin-bottom:16px">When you <code style="background:var(--code-bg);padding:2px 6px;border-radius:4px;font-size:13px">await fetch()</code> a network request, JavaScript doesn't sit and wait. It hands the request to the browser, frees the call stack, and resumes when the response is ready.</p>
 
@@ -1544,6 +1608,8 @@ console.log(c instanceof Shape, c instanceof Circle);</textarea>
     </div>
   </div>
 
+  </div><!-- /async-step1 -->
+  <div class="reveal-step" data-step="2">
   <h3>Promises</h3>
   <div class="code-block">
     <div class="code-block-header"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="code-block-label">promise basics</span></div>
@@ -1573,6 +1639,8 @@ fetchUser(1)
   .finally(() => console.log("Done!"));</pre>
   </div>
 
+  </div><!-- /async-step2 -->
+  <div class="reveal-step" data-step="3">
   <h3>Async/Await</h3>
   <div class="compare-grid">
     <div class="compare-col">
@@ -1681,6 +1749,7 @@ loadDashboard();</textarea>
       </div>
     </div>
   </div>
+  </div><!-- /async-step3 -->
 </section>
 
 
@@ -2053,21 +2122,44 @@ function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-function captureAndRun(code) {
+function captureAndRun(code, asyncOutEl) {
+  // Cancel any still-active previous async capture
+  if (window._captureRestore) { window._captureRestore(); }
+  if (window._captureTimer)   { clearTimeout(window._captureTimer); }
+
   const entries = [];
   const origLog = console.log, origWarn = console.warn,
         origErr = console.error, origInfo = console.info;
-  console.log = (...a) => entries.push({type:'log', msg: a.map(stringify).join(' ')});
-  console.warn = (...a) => entries.push({type:'warn', msg: a.map(stringify).join(' ')});
-  console.error = (...a) => entries.push({type:'error', msg: a.map(stringify).join(' ')});
-  console.info = (...a) => entries.push({type:'info', msg: a.map(stringify).join(' ')});
+
+  function push(type, a) {
+    entries.push({ type, msg: a.map(stringify).join(' ') });
+    // Live-update output for async callbacks (setTimeout etc.)
+    if (asyncOutEl) renderOutput(asyncOutEl, { entries, err: null, ms: '…', isSyntax: false }, '');
+  }
+
+  console.log   = (...a) => push('log',   a);
+  console.warn  = (...a) => push('warn',  a);
+  console.error = (...a) => push('error', a);
+  console.info  = (...a) => push('info',  a);
+
+  function restore() {
+    console.log = origLog; console.warn = origWarn;
+    console.error = origErr; console.info = origInfo;
+    window._captureRestore = null; window._captureTimer = null;
+  }
+  window._captureRestore = restore;
+  // Keep capture alive 8 s to catch setTimeout / Promise callbacks
+  window._captureTimer = setTimeout(restore, 8000);
+
   const t0 = performance.now();
   let err = null, isSyntax = false;
   try { new Function(code); } catch(e) { err = e; isSyntax = true; }
   if (!isSyntax) { try { eval(code); } catch(e) { err = e; } }
   const ms = (performance.now() - t0).toFixed(1);
-  console.log = origLog; console.warn = origWarn;
-  console.error = origErr; console.info = origInfo;
+
+  // Synchronous error — restore immediately (no async code possible)
+  if (err) { clearTimeout(window._captureTimer); restore(); }
+
   return { entries, err, ms, isSyntax };
 }
 
@@ -2215,7 +2307,7 @@ function runInline(id) {
   const ta = document.getElementById('ed-' + id);
   const out = document.getElementById('out-' + id);
   if (!ta || !out) return;
-  const result = captureAndRun(ta.value);
+  const result = captureAndRun(ta.value, out);
   renderOutput(out, result, ta.value);
 }
 
@@ -2236,7 +2328,7 @@ function mainKeydown(e) {
 function runMain() {
   const ta = document.getElementById('pg-main-editor');
   const out = document.getElementById('pg-main-output');
-  const result = captureAndRun(ta.value);
+  const result = captureAndRun(ta.value, out);
   renderOutput(out, result, ta.value);
 }
 
@@ -2267,7 +2359,7 @@ function floatPgToggle() {
 function floatPgRun() {
   const ta = document.getElementById('float-pg-editor');
   const out = document.getElementById('float-pg-output');
-  const result = captureAndRun(ta.value);
+  const result = captureAndRun(ta.value, out);
   renderOutput(out, result, ta.value);
 }
 
@@ -2805,15 +2897,15 @@ const MODULES = [
   { id:'variables',  label:'2. Variables & Scope' },
   { id:'datatypes',  label:'3. Data Types' },
   { id:'strings',    label:'4. Strings' },
-  { id:'arrays',     label:'5. Arrays' },
-  { id:'objects',    label:'6. Objects' },
+  { id:'arrays',     label:'5. Arrays',            phaseLabels:['Array Basics & Destructuring','filter · map · reduce · find','Editor'] },
+  { id:'objects',    label:'6. Objects',           phaseLabels:['Object Literals & Access','Destructuring','ES6 Enhanced','Editor'] },
   { id:'comparison', label:'7. Comparison & Equality' },
-  { id:'control',    label:'8. Control Structures' },
+  { id:'control',    label:'8. Control Structures',phaseLabels:['if / else if / else','switch','Ternary','Editor'] },
   { id:'loops',      label:'9. Loops' },
-  { id:'arrows',     label:'10. Arrow Functions' },
+  { id:'arrows',     label:'10. Arrow Functions',  phaseLabels:['Syntax Evolution','this Context + Warning','Editor'] },
   { id:'spread',     label:'11. Spread, Rest & Default' },
   { id:'es6',        label:'12. ES6+ Classes & Modules' },
-  { id:'async',      label:'13. Async / Await' },
+  { id:'async',      label:'13. Async / Await',   phaseLabels:['Concept + Animation','Promises','Async / Await'] },
   { id:'typescript', label:'14. TypeScript' },
 ];
 
@@ -2842,17 +2934,21 @@ function classifyRevealBlocks() {
     sec.classList.add('module-section');
     sec.dataset.phase = '0';
 
-    // Concept: all descriptive text, callout boxes, tables — NO code blocks
+    // Concept: descriptive text — skip anything inside a .reveal-step wrapper
     sec.querySelectorAll(
       '.section-desc, .card, .styled-table, h3, h4, p, ul, .info-box, ' +
       '.async-explainer, .async-anim-wrap, .async-live-demo'
-    ).forEach(el => el.classList.add('reveal-concept'));
+    ).forEach(el => {
+      if (!el.closest('.reveal-step')) el.classList.add('reveal-concept');
+    });
 
-    // Code: syntax-highlighted blocks + editor (shown together)
+    // Code: blocks not already inside a .reveal-step wrapper
     sec.querySelectorAll('.code-block, .compare-grid, .try-it')
-      .forEach(el => el.classList.add('reveal-code'));
+      .forEach(el => {
+        if (!el.closest('.reveal-step')) el.classList.add('reveal-code');
+      });
 
-    // Add locked banner (shown when phase === 0, non-admin)
+    // Add locked banner
     const banner = document.createElement('div');
     banner.className = 'section-locked-banner';
     banner.innerHTML = '🔒 <span>Content will appear when the instructor reveals it.</span>';
@@ -2861,28 +2957,69 @@ function classifyRevealBlocks() {
 }
 
 /* ── Apply a phases map to the DOM ── */
+/* ── Return the revealable chunks for a module (called after classifyRevealBlocks) ── */
+function getModuleChunks(id) {
+  const sec = document.getElementById('section-' + id);
+  if (!sec) return [];
+  const chunks = [];
+
+  // Concept group — all .reveal-concept elements not inside a reveal-step
+  if (sec.querySelector('.reveal-concept')) {
+    chunks.push({ chunkId: id + '-concept', label: 'Concept' });
+  }
+
+  // Each reveal-step in document order
+  sec.querySelectorAll('.reveal-step[data-step]').forEach(el => {
+    const step = el.dataset.step;
+    const h3  = el.querySelector('h3');
+    const cbl = el.querySelector('.code-block-label');
+    const lbl = h3 ? h3.textContent.trim() : cbl ? cbl.textContent.trim() : 'Step ' + step;
+    chunks.push({ chunkId: id + '-step-' + step, label: lbl });
+  });
+
+  // Standalone code group — .reveal-code elements not inside reveal-step
+  if (sec.querySelector('.reveal-code')) {
+    chunks.push({ chunkId: id + '-code', label: 'Code + Editor' });
+  }
+
+  return chunks;
+}
+
+/* ── Apply _phases state to one module section ── */
+function applyChunksToSection(id) {
+  const sec = document.getElementById('section-' + id);
+  if (!sec) return;
+
+  // Concept group
+  const showConcept = !!_phases[id + '-concept'];
+  sec.querySelectorAll('.reveal-concept')
+    .forEach(el => el.classList.toggle('revealed', showConcept));
+
+  // Each reveal-step
+  sec.querySelectorAll('.reveal-step[data-step]').forEach(el => {
+    el.classList.toggle('revealed', !!_phases[id + '-step-' + el.dataset.step]);
+  });
+
+  // Standalone code group
+  const showCode = !!_phases[id + '-code'];
+  sec.querySelectorAll('.reveal-code')
+    .forEach(el => el.classList.toggle('revealed', showCode));
+
+  // Banner: show locked banner only when nothing revealed
+  const chunks = getModuleChunks(id);
+  const anyOn  = chunks.some(c => !!_phases[c.chunkId]);
+  sec.dataset.phase = anyOn ? '1' : '0';
+}
+
+/* ── Apply a full phases map to all modules ── */
 function applyPhases(phases) {
   _phases = phases || {};
-  MODULES.forEach(({ id }) => {
-    const sec = document.getElementById('section-' + id);
-    if (!sec) return;
-    const phase = Number(_phases[id] || 0);
-    applyPhaseToSection(sec, phase);
-  });
+  MODULES.forEach(({ id }) => applyChunksToSection(id));
   updateAdminPanelUI();
 }
 
-function applyPhaseToSection(sec, phase) {
-  sec.dataset.phase = String(phase);
-
-  // Reset all revealed states
-  sec.querySelectorAll('.reveal-concept, .reveal-code')
-    .forEach(el => el.classList.remove('revealed'));
-
-  // Phase 1: concept text only  |  Phase 2: concept + code + editor
-  if (phase >= 1) sec.querySelectorAll('.reveal-concept').forEach(el => el.classList.add('revealed'));
-  if (phase >= 2) sec.querySelectorAll('.reveal-code').forEach(el => el.classList.add('revealed'));
-}
+/* legacy shim — keeps Supabase broadcast handler working */
+function applyPhaseToSection(sec, phase) { /* no-op: use applyChunksToSection */ }
 
 /* ══════════════════════════════════════════════════
    VIEWER — Realtime subscription
@@ -3039,83 +3176,89 @@ async function activateAdminMode() {
 ══════════════════════════════════════════════════ */
 function buildAdminPanel() {
   const body = document.getElementById('admin-panel-body');
-  body.innerHTML = MODULES.map(({ id, label }) => `
-    <div class="ap-module" id="apm-${id}">
-      <div class="ap-module-name">
-        ${label}
-        <span class="ap-phase-indicator" id="api-${id}">hidden</span>
+  body.innerHTML = MODULES.map(({ id, label }) => {
+    const chunks = getModuleChunks(id);
+    const rows = chunks.map(({ chunkId, label: cLbl }) => `
+      <div class="ap-chunk-row">
+        <span class="ap-chunk-label">${cLbl}</span>
+        <button class="ap-chunk-btn" id="apb-${chunkId}"
+          onclick="adminToggleChunk('${chunkId}','${id}')">
+          <span class="ap-chunk-icon">○</span> Hidden
+        </button>
+      </div>`).join('');
+
+    return `<div class="ap-module" id="apm-${id}">
+      <div class="ap-module-header">
+        <span class="ap-module-title">${label}</span>
+        <div class="ap-module-actions">
+          <button class="ap-mini-btn" onclick="adminShowModule('${id}')">Show all</button>
+          <button class="ap-mini-btn" onclick="adminHideModule('${id}')">Hide all</button>
+        </div>
       </div>
-      <div class="ap-phase-btns">
-        <button class="ap-phase-btn" id="apb-${id}-1"
-          onclick="adminSetPhase('${id}',1)" title="Show concept text only">Concept</button>
-        <button class="ap-phase-btn" id="apb-${id}-2"
-          onclick="adminSetPhase('${id}',2)" title="Show code samples + editor">Code + Editor</button>
-        <button class="ap-hide-btn"
-          onclick="adminSetPhase('${id}',0)" title="Hide all content">✕</button>
-      </div>
-    </div>
-  `).join('');
+      <div class="ap-chunks">${rows}</div>
+    </div>`;
+  }).join('');
 }
 
 function updateAdminPanelUI() {
-  const LABELS  = ['hidden', 'concept', 'code + editor'];
-  const IND_CLS = ['', 'p1', 'p2'];
-  const BTN_ACT = ['', 'active-concept', 'active-code'];
-
   MODULES.forEach(({ id }) => {
-    const phase = Number(_phases[id] || 0);
-    const ind = document.getElementById('api-' + id);
-    if (ind) {
-      ind.textContent = LABELS[phase] || 'hidden';
-      ind.className = 'ap-phase-indicator ' + (IND_CLS[phase] || '');
-    }
-    [1, 2].forEach(p => {
-      const btn = document.getElementById(`apb-${id}-${p}`);
-      if (btn) btn.className = 'ap-phase-btn' + (phase === p ? ' ' + BTN_ACT[p] : '');
+    getModuleChunks(id).forEach(({ chunkId }) => {
+      const btn = document.getElementById('apb-' + chunkId);
+      if (!btn) return;
+      const on = !!_phases[chunkId];
+      btn.className = 'ap-chunk-btn' + (on ? ' on' : '');
+      btn.innerHTML = on
+        ? '<span class="ap-chunk-icon">●</span> Shown'
+        : '<span class="ap-chunk-icon">○</span> Hidden';
     });
-
-    // Also update section DOM phase
-    const sec = document.getElementById('section-' + id);
-    if (sec) applyPhaseToSection(sec, phase);
+    applyChunksToSection(id);
   });
 }
 
-/* ── Set phase for one module and push to Supabase ── */
-async function adminSetPhase(sectionId, phase) {
-  _phases = { ..._phases, [sectionId]: phase };
-  updateAdminPanelUI(); // instant local update
-
+/* ── Broadcast current _phases to Supabase + live channel ── */
+async function adminPushPhases() {
   const sb = getSB();
-  if (!sb) { console.warn('Supabase not configured'); return; }
-
-  // Persist to DB (so late-joining viewers get the current state)
+  if (!sb) return;
   await sb.from('bootcamp_session')
     .update({ phases: _phases, updated_at: new Date().toISOString() })
     .eq('id', 1);
-
-  // Broadcast instantly to all connected viewers (no WebSocket lag from DB polling)
   if (_liveChannel) {
     _liveChannel.send({ type: 'broadcast', event: 'phase-update', payload: { phases: _phases } });
   }
 }
 
-/* ── Reset all modules to phase 0 ── */
+/* ── Toggle a single chunk on/off ── */
+async function adminToggleChunk(chunkId, moduleId) {
+  _phases[chunkId] = _phases[chunkId] ? 0 : 1;
+  applyChunksToSection(moduleId);
+  updateAdminPanelUI();
+  await adminPushPhases();
+}
+
+/* ── Show all chunks in one module ── */
+async function adminShowModule(id) {
+  getModuleChunks(id).forEach(({ chunkId }) => { _phases[chunkId] = 1; });
+  applyChunksToSection(id);
+  updateAdminPanelUI();
+  await adminPushPhases();
+}
+
+/* ── Hide all chunks in one module ── */
+async function adminHideModule(id) {
+  getModuleChunks(id).forEach(({ chunkId }) => { _phases[chunkId] = 0; });
+  applyChunksToSection(id);
+  updateAdminPanelUI();
+  await adminPushPhases();
+}
+
+/* ── Show ALL chunks across all modules ── */
 async function adminShowAll() {
   if (!confirm('Reveal ALL content for all viewers?')) return;
-  const all = {};
-  MODULES.forEach(({ id }) => { all[id] = 2; });
-  _phases = all;
+  MODULES.forEach(({ id }) => {
+    getModuleChunks(id).forEach(({ chunkId }) => { _phases[chunkId] = 1; });
+  });
   updateAdminPanelUI();
-
-  const sb = getSB();
-  if (sb) {
-    await sb.from('bootcamp_session')
-      .update({ phases: all, updated_at: new Date().toISOString() })
-      .eq('id', 1);
-    if (_liveChannel) {
-      _liveChannel.send({ type: 'broadcast', event: 'phase-update', payload: { phases: all } });
-    }
-  }
+  await adminPushPhases();
 }
 
 async function adminResetAll() {
